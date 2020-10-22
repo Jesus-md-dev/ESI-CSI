@@ -1,0 +1,17 @@
+INDEX VERSION 1.131+C:\Users\black\Documents\Practicas\CSI\.metadata\.plugins\org.eclipse.jdt.core
+2956920108.index
+1062490251.index
+223532422.index
+3727931722.index
+2977722907.index
+4173836310.index
+3167290981.index
+3161334427.index
+2385516920.index
+1432773192.index
+3456752004.index
+4152164043.index
+3256275240.index
+755422726.index
+3123174158.index
+3048892776.index
