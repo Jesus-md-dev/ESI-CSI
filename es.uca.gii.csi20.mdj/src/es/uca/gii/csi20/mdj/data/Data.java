@@ -3,6 +3,7 @@ package es.uca.gii.csi20.mdj.data;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.util.Properties;
 
 import es.uca.gii.csi20.mdj.util.Config;
@@ -12,7 +13,7 @@ public class Data {
     public static String getPropertiesUrl() { return "./db.properties"; }
 	
     public static Connection Connection() throws Exception {
-		
+	
         try {
             Properties properties = Config.Properties(getPropertiesUrl());
             return DriverManager.getConnection(
@@ -32,25 +33,16 @@ public class Data {
     }
     
     public static String String2Sql( String s, boolean bAddQuotes, boolean bAddWildcards ) {
-    	String r = "";
-    	int i = 0;
-    	char c = new String("'").charAt(0);
-        
-        while(i < s.length()){
-            if(s.charAt(i) == c )
-                r+="''";
-            else
-                r+=s.charAt(i);
-            ++i;
-        }    
+    	
+    	s = s.replace("'","''");
     	
     	if(bAddWildcards)
-    		r = new String("%" + r + "%");
+    		s = new String("%" + s + "%");    	
     	
     	if(bAddQuotes)
-    		r = new String("'" + r + "'");
+    		s = new String("'" + s + "'");
     	
-    	return r;
+    	return s;
     }
     
     public static int Boolean2Sql(boolean b) {
@@ -59,5 +51,18 @@ public class Data {
     	else
     		return 0;
     }
-        
+    
+    public static int LastId(Connection con) throws Exception {
+    	ResultSet rs = null;
+    	
+    	try {
+    		Properties properties = Config.Properties(getPropertiesUrl());
+    		rs = con.createStatement().executeQuery(properties.getProperty("jdbc.lastIdSentence"));
+    		rs.next();
+    		
+    		return rs.getInt("LAST_INSERT_ID()");
+    	}
+    	catch (Exception ee) { throw ee; }
+    }
+    
 }

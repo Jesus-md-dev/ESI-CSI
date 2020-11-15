@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 22-10-2020 a las 23:06:00
+-- Tiempo de generación: 29-10-2020 a las 16:19:14
 -- Versión del servidor: 8.0.17
 -- Versión de PHP: 7.3.10
 
@@ -32,16 +32,16 @@ CREATE TABLE `caso` (
   `id` int(11) NOT NULL,
   `Titulo` varchar(100) NOT NULL,
   `Descripcion` varchar(200) NOT NULL,
-  `Fecha Creacion` date NOT NULL
+  `Importancia` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `caso`
 --
 
-INSERT INTO `caso` (`id`, `Titulo`, `Descripcion`, `Fecha Creacion`) VALUES
-(2, 'Desaparición hombre 30 años', 'Desaparicion misteriosa', '2020-10-19'),
-(3, 'Asesinato persona', 'cuerpo sin identificar encontrado', '2020-10-12');
+INSERT INTO `caso` (`id`, `Titulo`, `Descripcion`, `Importancia`) VALUES
+(2, 'Desaparición hombre 30 años', 'Desaparicion misteriosa', 5),
+(3, 'Asesinato persona', 'cuerpo sin identificar encontrado', 0);
 
 --
 -- Índices para tablas volcadas
@@ -61,7 +61,7 @@ ALTER TABLE `caso`
 -- AUTO_INCREMENT de la tabla `caso`
 --
 ALTER TABLE `caso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,4 +1,0 @@
-jdbc.driverClassName=com.mysql.cj.jdbc.Driver
-jdbc.url=jdbc:mysql://localhost/csi20$alu$?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
-jdbc.username=$usuario MySQL$
-jdbc.password=$contrseña$
