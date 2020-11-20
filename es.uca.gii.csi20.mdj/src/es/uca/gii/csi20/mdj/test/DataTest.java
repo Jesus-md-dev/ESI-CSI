@@ -25,23 +25,26 @@ class DataTest {
 		Connection con = null;
 		ResultSet rs = null;
 		ResultSet count = null;
+		int iNumReg;
+		int iIndice = 0;
 		
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso;");
+			
 			count = con.createStatement().executeQuery("SELECT COUNT(id) FROM caso;");
-			
 			count.next();
-			int numreg = count.getInt("COUNT(id)");
+			iNumReg = count.getInt("COUNT(id)");
 			
-			int i = 0;
+			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso;");
+			
+			
 			while(rs.next()) {
 				System.out.println(rs.getString("id")+" "+rs.getString("Titulo")+" "+rs.getString("Descripcion")
 				+" "+rs.getInt("Importancia"));
-				i++;
+				iIndice++;
 				assertEquals(4,rs.getMetaData().getColumnCount());
 			}
-			assertEquals(numreg,i);
+			assertEquals(iNumReg,iIndice);
 		}
 		catch (SQLException ee) {throw ee;}
 		finally {

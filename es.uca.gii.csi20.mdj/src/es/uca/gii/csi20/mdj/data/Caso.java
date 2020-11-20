@@ -17,7 +17,6 @@ public class Caso {
 		Connection con = null;
 		ResultSet rs = null;
 		try {
-			
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery("SELECT Titulo, Descripcion, Importancia "
 					+ "FROM caso WHERE id = " + iId);
@@ -77,9 +76,8 @@ public class Caso {
 				+ " WHERE id = " + iId_;
 		
 		try {
-			if(_bIsDeleted) {
+			if(_bIsDeleted)
 				throw new Exception("Borrada");
-			}
 			
 			con = Data.Connection();
 			con.createStatement().executeUpdate(sQuery);

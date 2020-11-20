@@ -24,33 +24,36 @@ public class CasoTest {
 	public void testConstructor() throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
+		Caso cCaso;
 		
 		try {
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso;");
+			rs.next();
+			cCaso = new Caso(rs.getInt("id"));
 			
-			if(rs.next()) {
-				Caso cCaso = new Caso(rs.getInt("id"));
-				
-				assertEquals(rs.getInt("Id"), cCaso.getId());
-				assertEquals(rs.getString("Titulo"), cCaso.getTitulo());
-				assertEquals(rs.getString("Descripcion"), cCaso.getDescripcion());
-				assertEquals(rs.getInt("Importancia"), cCaso.getImportancia());
-				
-			}
+			assertEquals(rs.getInt("Id"), cCaso.getId());
+			assertEquals(rs.getString("Titulo"), cCaso.getTitulo());
+			assertEquals(rs.getString("Descripcion"), cCaso.getDescripcion());
+			assertEquals(rs.getInt("Importancia"), cCaso.getImportancia());	
 		}
 		catch (SQLException ee) { throw ee; }
+		finally {
+			if (con != null) con.close();
+			if (rs != null) rs.close();
+		}
 	}
 	
 	@Test
 	public void testCreate() throws Exception{		
 		Connection con = null;
 		ResultSet rs = null;
+		Caso cCaso;
 		
 		try {
 			con = Data.Connection();
 			
-			Caso cCaso = Caso.Create("Titulo del caso", "Descipcion del caso", 2);
+			cCaso = Caso.Create("Titulo del caso", "Descipcion del caso", 2);
 			
 			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso WHERE id = " + cCaso.getId() + ";");
 			
@@ -64,6 +67,10 @@ public class CasoTest {
 			con.createStatement().executeUpdate("DELETE FROM caso WHERE id = " + cCaso.getId() + ";");
 		}
 		catch (SQLException ee) { throw ee; }
+		finally {
+			if (con != null) con.close();
+			if (rs != null) rs.close();
+		}
 	}
 	
 	@Test
@@ -97,7 +104,6 @@ public class CasoTest {
 		cCaso.setDescripcion("UpdateDescripcion");
 		cCaso.setImportancia(2);
 		cCaso.Update();
-		ArrayList<Caso> alCasoList = Caso.Select(null, "UpdateDescripcion", null);
 		Caso cCasoUpdated = new Caso(cCaso.getId());
 		assertEquals("UpdateTitulo", cCasoUpdated.getTitulo());
 		assertEquals("UpdateDescripcion", cCasoUpdated.getDescripcion());

@@ -24,7 +24,8 @@ public class Data {
        catch (Exception ee) { throw ee; }
 	}
     
-    public static void LoadDriver() 
+    @SuppressWarnings("deprecation")
+	public static void LoadDriver() 
         throws InstantiationException, IllegalAccessException, 
         ClassNotFoundException, IOException {
 			
@@ -32,15 +33,14 @@ public class Data {
             ).getProperty("jdbc.driverClassName")).newInstance();
     }
     
-    public static String String2Sql( String s, boolean bAddQuotes, boolean bAddWildcards ) {
-    	
+    public static String String2Sql(String s, boolean bAddQuotes, boolean bAddWildcards ) {
     	s = s.replace("'","''");
     	
     	if(bAddWildcards)
-    		s = new String("%" + s + "%");    	
+    		s = "%" + s + "%";    	
     	
     	if(bAddQuotes)
-    		s = new String("'" + s + "'");
+    		s = "'" + s + "'";
     	
     	return s;
     }
@@ -63,6 +63,9 @@ public class Data {
     		return rs.getInt("LAST_INSERT_ID()");
     	}
     	catch (Exception ee) { throw ee; }
+    	finally {
+    		if(rs != null) rs.close();
+    	}
     }
     
 }

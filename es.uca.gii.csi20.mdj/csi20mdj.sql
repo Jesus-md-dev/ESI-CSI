@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 29-10-2020 a las 16:19:14
+-- Tiempo de generación: 20-11-2020 a las 12:19:25
 -- Versión del servidor: 8.0.17
 -- Versión de PHP: 7.3.10
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `csi20mdj`
 --
+CREATE DATABASE IF NOT EXISTS `csi20mdj` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `csi20mdj`;
 
 -- --------------------------------------------------------
 
@@ -40,8 +42,8 @@ CREATE TABLE `caso` (
 --
 
 INSERT INTO `caso` (`id`, `Titulo`, `Descripcion`, `Importancia`) VALUES
-(2, 'Desaparición hombre 30 años', 'Desaparicion misteriosa', 5),
-(3, 'Asesinato persona', 'cuerpo sin identificar encontrado', 0);
+(1, 'Desaparición hombre 30 años', 'Desaparicion misteriosa', 5),
+(2, 'Asesinato persona', 'cuerpo sin identificar encontrado', 0);
 
 --
 -- Índices para tablas volcadas
@@ -62,8 +64,3 @@ ALTER TABLE `caso`
 --
 ALTER TABLE `caso`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
