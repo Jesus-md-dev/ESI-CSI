@@ -49,7 +49,7 @@ public class FrmMain {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("Titulo");
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 600, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -61,8 +61,8 @@ public class FrmMain {
 		JMenuItem mitNewCaso = new JMenuItem("Caso");
 		mitNewCaso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				IfrCaso ifrCaso = new IfrCaso();
-				ifrCaso.setBounds(10,27,244,192);
+				IfrCaso ifrCaso = new IfrCaso(null);
+				ifrCaso.setBounds(10, 27, 300, 192);
 				frame.getContentPane().add(ifrCaso);
 				ifrCaso.setVisible(true);
 			}
@@ -73,8 +73,15 @@ public class FrmMain {
 		menuBar.add(mitSearch);
 		
 		JMenuItem mitSearchCaso = new JMenuItem("Caso");
+		mitSearchCaso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				IfrCasos ifrCasos = new IfrCasos(frame);
+				ifrCasos.setBounds(12, 28, 500, 350);
+				frame.getContentPane().add(ifrCasos, 0);
+				ifrCasos.setVisible(true);
+			}
+		});
 		mitSearch.add(mitSearchCaso);
 		frame.getContentPane().setLayout(null);
 	}
-
 }

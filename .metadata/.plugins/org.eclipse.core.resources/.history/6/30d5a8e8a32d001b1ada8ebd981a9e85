@@ -1,0 +1,46 @@
+package es.uca.gii.csi20.mdj.gui;
+import java.util.ArrayList;
+
+import javax.swing.table.AbstractTableModel;
+
+import es.uca.gii.csi20.mdj.data.Caso;
+
+public class CasosTableModel extends AbstractTableModel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Caso> _aData = new ArrayList<>();
+	
+	public CasosTableModel(ArrayList<Caso> aData) {
+		_aData = aData;
+	}
+
+	@Override
+	public int getColumnCount() {
+		return 3;
+	}
+
+	@Override
+	public int getRowCount() {
+		return _aData.size();
+	}
+
+	@Override
+	public Object getValueAt(int iRow, int iCol) {		
+		Caso cCaso = _aData.get(iRow);
+		switch (iCol) {
+			case 0:
+				return cCaso.getTitulo();
+			case 1:
+				return cCaso.getDescripcion();
+			case 2:
+				return cCaso.getImportancia();
+			default:
+		}
+		
+		return null;
+	}
+	
+	
+}
