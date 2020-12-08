@@ -53,9 +53,10 @@ public class CasoTest {
 		try {
 			con = Data.Connection();
 			
-			cCaso = Caso.Create("Titulo del caso", "Descipcion del caso", 2);
+			cCaso = Caso.Create("Titulo del caso", "Descipcion del caso", 2, null);
 			
-			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso WHERE id = " + cCaso.getId() + ";");
+			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia "
+					+ "FROM caso WHERE id = " + cCaso.getId() + ";");
 			
 			rs.next();
 			
@@ -75,21 +76,21 @@ public class CasoTest {
 	
 	@Test
 	public void testSelect() throws Exception{
-		Caso.Create("PruebaTitulo", "PruebaDescripcion", 0);
+		Caso.Create("PruebaTitulo", "PruebaDescripcion", 0, null);
 		
-		ArrayList<Caso> alCasoList = Caso.Select("Prueba", null, null);
+		ArrayList<Caso> alCasoList = Caso.Select("Prueba", null, null, null);
 		Caso cCaso = alCasoList.get(0);
 		assertEquals("PruebaTitulo", cCaso.getTitulo());
 		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
 		assertEquals(0, cCaso.getImportancia());
 		
-		alCasoList = Caso.Select("rue", null, null);
+		alCasoList = Caso.Select("rue", null, null, null);
 		cCaso = alCasoList.get(0);
 		assertEquals("PruebaTitulo", cCaso.getTitulo());
 		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
 		assertEquals(0, cCaso.getImportancia());
 		
-		alCasoList = Caso.Select(null, "bades", null);
+		alCasoList = Caso.Select(null, "bades", null, null);
 		cCaso = alCasoList.get(0);
 		assertEquals("PruebaTitulo", cCaso.getTitulo());
 		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
@@ -99,7 +100,7 @@ public class CasoTest {
 	
 	@Test
 	public void testUpdate() throws Exception{
-		Caso cCaso = Caso.Create("PruebaTitulo", "PruebaDescripcion", 0);
+		Caso cCaso = Caso.Create("PruebaTitulo", "PruebaDescripcion", 0, null);
 		cCaso.setTitulo("UpdateTitulo");
 		cCaso.setDescripcion("UpdateDescripcion");
 		cCaso.setImportancia(2);
@@ -116,7 +117,7 @@ public class CasoTest {
 		Connection con = null;
 		ResultSet rs = null;
 		try {
-			Caso cCaso = Caso.Create("TituloDelete", "DescripcionDelete", 0);
+			Caso cCaso = Caso.Create("TituloDelete", "DescripcionDelete", 0, null);
 			con = Data.Connection();
 			cCaso.Delete();
 			rs = con.createStatement().executeQuery("SELECT id FROM caso WHERE id = "+cCaso.getId());

@@ -49,7 +49,7 @@ public class FrmMain {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("Titulo");
-		frame.setBounds(100, 100, 600, 500);
+		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -61,10 +61,16 @@ public class FrmMain {
 		JMenuItem mitNewCaso = new JMenuItem("Caso");
 		mitNewCaso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				IfrCaso ifrCaso = new IfrCaso(null);
-				ifrCaso.setBounds(10, 27, 300, 192);
-				frame.getContentPane().add(ifrCaso);
-				ifrCaso.setVisible(true);
+				IfrCaso ifrCaso;
+				try {
+					ifrCaso = new IfrCaso(null);
+					ifrCaso.setBounds(10, 27, 300, 192);
+					frame.getContentPane().add(ifrCaso);
+					ifrCaso.setVisible(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		mitNew.add(mitNewCaso);
@@ -75,10 +81,16 @@ public class FrmMain {
 		JMenuItem mitSearchCaso = new JMenuItem("Caso");
 		mitSearchCaso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				IfrCasos ifrCasos = new IfrCasos(frame);
-				ifrCasos.setBounds(12, 28, 500, 350);
-				frame.getContentPane().add(ifrCasos, 0);
-				ifrCasos.setVisible(true);
+				IfrCasos ifrCasos;
+				try {
+					ifrCasos = new IfrCasos(frame);
+					ifrCasos.setBounds(12, 28, 500, 350);
+					frame.getContentPane().add(ifrCasos, 0);
+					ifrCasos.setVisible(true);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		mitSearch.add(mitSearchCaso);

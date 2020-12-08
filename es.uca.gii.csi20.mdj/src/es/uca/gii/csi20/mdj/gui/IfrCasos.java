@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import es.uca.gii.csi20.mdj.data.Caso;
+import es.uca.gii.csi20.mdj.data.Estado;
 
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -17,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
 
 public class IfrCasos extends JInternalFrame {
 	/**
@@ -30,13 +32,14 @@ public class IfrCasos extends JInternalFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws Exception 
 	 */
-	public IfrCasos(Container pnlParent) {
+	public IfrCasos(Container pnlParent) throws Exception {
 		setResizable(true);
 		setClosable(true);
 		setEnabled(false);
 		setTitle("Casos");
-		setBounds(100, 100, 481, 300);
+		setBounds(100, 100, 700, 500);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.NORTH);
@@ -63,21 +66,37 @@ public class IfrCasos extends JInternalFrame {
 		panel.add(txtImportancia);
 		txtImportancia.setColumns(10);
 		
+		JLabel lblEstado = new JLabel("Estado");
+		panel.add(lblEstado);
+		
+		JComboBox<Estado> cmbEstado = new JComboBox<Estado>();
+		cmbEstado.setModel(
+				new EstadoListModel(Estado.Select(null)));
+		cmbEstado.setEditable(true);
+		panel.add(cmbEstado);
+		
+		
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 						tabResult.setModel(
-								new CasosTableModel(Caso.Select(txtTitulo.getText(),
-								txtDescripcion.getText(),
-								(txtImportancia.getText().equals("")?null:
-								Integer.parseInt(txtImportancia.getText())))));
+								new CasosTableModel(
+										Caso.Select(
+												txtTitulo.getText(), 
+												txtDescripcion.getText(), 
+												(txtImportancia.getText().equals("")?null:Integer.parseInt(txtImportancia.getText())),
+												cmbEstado.getSelectedItem() == null?null:cmbEstado.getSelectedItem().toString()
+												)
+										)
+								);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error al introducir los datos",
+					JOptionPane.showMessageDialog(null, /*"Error al introducir los datos"*/ e.getMessage(),
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
+		
 		panel.add(btnBuscar);
 		
 		tabResult = new JTable();
@@ -90,10 +109,16 @@ public class IfrCasos extends JInternalFrame {
 					Caso cCaso = ((CasosTableModel)tabResult.getModel()).getData(iRow);
 					
 					if (cCaso != null) {
-						IfrCaso ifrCaso = new IfrCaso(cCaso);
-						ifrCaso.setBounds(10, 27, 300, 192);
-						pnlParent.add(ifrCaso, 0);
-						ifrCaso.setVisible(true);
+						IfrCaso ifrCaso;
+						try {
+							ifrCaso = new IfrCaso(cCaso);
+							ifrCaso.setBounds(10, 27, 300, 192);
+							pnlParent.add(ifrCaso, 0);
+							ifrCaso.setVisible(true);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				}
 			}

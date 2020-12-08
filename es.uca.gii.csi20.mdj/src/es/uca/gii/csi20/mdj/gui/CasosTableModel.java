@@ -17,7 +17,7 @@ public class CasosTableModel extends AbstractTableModel{
 	}
 
 	@Override
-	public int getColumnCount() { return 3;	}
+	public int getColumnCount() { return 4;	}
 
 	@Override
 	public int getRowCount() { return _aData.size(); }
@@ -31,6 +31,8 @@ public class CasosTableModel extends AbstractTableModel{
 				return _aData.get(iRow).getDescripcion();
 			case 2:
 				return _aData.get(iRow).getImportancia();
+			case 3:
+				return _aData.get(iRow).getEstado();
 			default:
 				return null;
 		}
