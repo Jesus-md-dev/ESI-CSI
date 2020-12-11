@@ -39,7 +39,7 @@ public class IfrCasos extends JInternalFrame {
 		setClosable(true);
 		setEnabled(false);
 		setTitle("Casos");
-		setBounds(100, 100, 700, 500);
+		setBounds(100, 100, 800, 500);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.NORTH);
@@ -85,13 +85,12 @@ public class IfrCasos extends JInternalFrame {
 										Caso.Select(
 												txtTitulo.getText(), 
 												txtDescripcion.getText(), 
-												(txtImportancia.getText().equals("")?null:Integer.parseInt(txtImportancia.getText())),
-												cmbEstado.getSelectedItem() == null?null:cmbEstado.getSelectedItem().toString()
-												)
-										)
-								);
+												(txtImportancia.getText().equals("")?null:
+													Integer.parseInt(txtImportancia.getText())),
+												cmbEstado.getSelectedItem() == null?null
+														:cmbEstado.getSelectedItem().toString())));
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, /*"Error al introducir los datos"*/ e.getMessage(),
+					JOptionPane.showMessageDialog(null, "Error al introducir los datos",
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -116,8 +115,8 @@ public class IfrCasos extends JInternalFrame {
 							pnlParent.add(ifrCaso, 0);
 							ifrCaso.setVisible(true);
 						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Error al introducir los datos",
+									"Error", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				}

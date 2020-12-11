@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.event.ActionListener;
@@ -38,7 +39,8 @@ public class FrmMain {
 	 * @throws InstantiationException 
 	 * @throws ClassNotFoundException 
 	 */
-	public FrmMain() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public FrmMain() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+	UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		initialize();
 	}
@@ -48,8 +50,8 @@ public class FrmMain {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setTitle("Titulo");
-		frame.setBounds(100, 100, 800, 600);
+		frame.setTitle("Gestión de Archivos Policiales de Silent Hill");
+		frame.setBounds(100, 100, 900, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -68,8 +70,8 @@ public class FrmMain {
 					frame.getContentPane().add(ifrCaso);
 					ifrCaso.setVisible(true);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error al introducir los datos",
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -88,8 +90,8 @@ public class FrmMain {
 					frame.getContentPane().add(ifrCasos, 0);
 					ifrCasos.setVisible(true);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error al introducir los datos",
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

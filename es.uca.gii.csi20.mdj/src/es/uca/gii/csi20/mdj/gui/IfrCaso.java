@@ -64,13 +64,6 @@ public class IfrCaso extends JInternalFrame {
 		lblImportancia.setBounds(10, 73, 61, 14);
 		getContentPane().add(lblImportancia);
 		
-		_cCaso = cCaso;
-		if(_cCaso != null) {
-			txtTitulo.setText(_cCaso.getTitulo());
-			txtDescripcion.setText(_cCaso.getDescripcion());
-			txtImportancia.setText(Integer.toString(_cCaso.getImportancia()));
-		}
-		
 		JComboBox<Estado> cmbEstado = new JComboBox<Estado>();
 		cmbEstado.setModel(
 				new EstadoListModel(Estado.Select(null)));
@@ -81,11 +74,18 @@ public class IfrCaso extends JInternalFrame {
 		lblEstado.setBounds(10, 105, 46, 14);
 		getContentPane().add(lblEstado);
 		
+		_cCaso = cCaso;
+		if(_cCaso != null) {
+			txtTitulo.setText(_cCaso.getTitulo());
+			txtDescripcion.setText(_cCaso.getDescripcion());
+			txtImportancia.setText(Integer.toString(_cCaso.getImportancia()));
+			cmbEstado.getModel().setSelectedItem(_cCaso.getEstado());
+		}
+		
 		JButton butSave = new JButton("Guardar");
 		butSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					
 					Estado eEstado = (Estado) cmbEstado.getSelectedItem();
 					
 					if(txtTitulo.getText().isEmpty())
@@ -98,7 +98,8 @@ public class IfrCaso extends JInternalFrame {
 						throw new IllegalStateException("Estado sin elegir");
 					
 					if(_cCaso == null)
-						_cCaso = Caso.Create(txtTitulo.getText(), txtDescripcion.getText(), Integer.parseInt(txtImportancia.getText()), eEstado);
+						_cCaso = Caso.Create(txtTitulo.getText(), txtDescripcion.getText(), 
+								Integer.parseInt(txtImportancia.getText()), eEstado);
 					else {
 						_cCaso.setTitulo(txtTitulo.getText());
 						_cCaso.setDescripcion(txtDescripcion.getText());
@@ -109,11 +110,11 @@ public class IfrCaso extends JInternalFrame {
 				} catch(IllegalStateException ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage() ,"Error", JOptionPane.ERROR_MESSAGE);
 				} catch (NumberFormatException ex) {
-					JOptionPane.showMessageDialog(null, "Se ha introducido un valor no numérico\n " + ex.getMessage() ,"Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Se ha introducido un valor no numérico\n " + ex.getMessage() 
+					,"Error", JOptionPane.ERROR_MESSAGE);
 				} catch (Exception ex) { 
 					JOptionPane.showMessageDialog(null, ex.getMessage() ,"Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
 			}
 		});
 		butSave.setBounds(81, 134, 89, 23);

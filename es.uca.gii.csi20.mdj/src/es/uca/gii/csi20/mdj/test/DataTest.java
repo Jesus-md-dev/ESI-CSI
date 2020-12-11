@@ -24,20 +24,18 @@ class DataTest {
 	void testTableAccess() throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
-		ResultSet count = null;
 		int iNumReg;
 		int iIndice = 0;
 		
 		try {
 			con = Data.Connection();
 			
-			count = con.createStatement().executeQuery("SELECT COUNT(id) FROM caso;");
-			count.next();
-			iNumReg = count.getInt("COUNT(id)");
+			rs = con.createStatement().executeQuery("SELECT COUNT(id) FROM caso;");
+			rs.next();
+			iNumReg = rs.getInt("COUNT(id)");
+			rs.close();
 			
 			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso;");
-			
-			
 			while(rs.next()) {
 				System.out.println(rs.getString("id")+" "+rs.getString("Titulo")+" "+rs.getString("Descripcion")
 				+" "+rs.getInt("Importancia"));

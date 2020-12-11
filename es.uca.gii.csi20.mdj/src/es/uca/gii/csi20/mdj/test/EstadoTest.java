@@ -30,14 +30,14 @@ public class EstadoTest {
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery("SELECT id, Nombre FROM estado;");
 			rs.next();
-			eEstado = new Estado(rs.getInt("id"));
+			eEstado = new Estado(rs.getInt("id"), con);
 			
 			assertEquals(rs.getInt("Id"), eEstado.getId());
 			assertEquals(rs.getString("Nombre"), eEstado.getNombre());
 		}
 		catch (SQLException ee) { throw ee; }
 		finally {
-			if (con != null) con.close();
+			if (con != null) con.close(); 
 			if (rs != null) rs.close();
 		}
 	}

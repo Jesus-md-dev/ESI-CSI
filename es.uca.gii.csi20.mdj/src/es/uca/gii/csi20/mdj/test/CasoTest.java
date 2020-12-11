@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 
 import es.uca.gii.csi20.mdj.data.Caso;
 import es.uca.gii.csi20.mdj.data.Data;
+import es.uca.gii.csi20.mdj.data.Estado;
 
 public class CasoTest {
 	
@@ -49,11 +50,12 @@ public class CasoTest {
 		Connection con = null;
 		ResultSet rs = null;
 		Caso cCaso;
+		Estado eEstado = Estado.Create("Estado");
 		
 		try {
 			con = Data.Connection();
 			
-			cCaso = Caso.Create("Titulo del caso", "Descipcion del caso", 2, null);
+			cCaso = Caso.Create("Titulo del caso", "Descipcion del caso", 2, eEstado);
 			
 			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia "
 					+ "FROM caso WHERE id = " + cCaso.getId() + ";");
@@ -66,6 +68,7 @@ public class CasoTest {
 			assertEquals(rs.getInt("Importancia"), cCaso.getImportancia());			
 			
 			con.createStatement().executeUpdate("DELETE FROM caso WHERE id = " + cCaso.getId() + ";");
+			eEstado.Delete();
 		}
 		catch (SQLException ee) { throw ee; }
 		finally {
@@ -76,50 +79,73 @@ public class CasoTest {
 	
 	@Test
 	public void testSelect() throws Exception{
-		Caso.Create("PruebaTitulo", "PruebaDescripcion", 0, null);
+		Estado eEstado = Estado.Create("Estado");
+		Caso.Create("PruebaTitulo", "PruebaDescripcion", 3, eEstado);
 		
 		ArrayList<Caso> alCasoList = Caso.Select("Prueba", null, null, null);
 		Caso cCaso = alCasoList.get(0);
 		assertEquals("PruebaTitulo", cCaso.getTitulo());
 		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
-		assertEquals(0, cCaso.getImportancia());
+		assertEquals(3, cCaso.getImportancia());
 		
 		alCasoList = Caso.Select("rue", null, null, null);
 		cCaso = alCasoList.get(0);
 		assertEquals("PruebaTitulo", cCaso.getTitulo());
 		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
-		assertEquals(0, cCaso.getImportancia());
+		assertEquals(3, cCaso.getImportancia());
 		
 		alCasoList = Caso.Select(null, "bades", null, null);
 		cCaso = alCasoList.get(0);
 		assertEquals("PruebaTitulo", cCaso.getTitulo());
 		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
-		assertEquals(0, cCaso.getImportancia());
+		assertEquals(3, cCaso.getImportancia());
+		
+		alCasoList = Caso.Select(null, null, 3, null);
+		cCaso = alCasoList.get(0);
+		assertEquals("PruebaTitulo", cCaso.getTitulo());
+		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
+		assertEquals(3, cCaso.getImportancia());
+		
+		alCasoList = Caso.Select(null, null, null, "sta");
+		cCaso = alCasoList.get(0);
+		assertEquals("PruebaTitulo", cCaso.getTitulo());
+		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
+		assertEquals(3, cCaso.getImportancia());
+		
 		cCaso.Delete();
+		eEstado.Delete();
 	}
 	
 	@Test
 	public void testUpdate() throws Exception{
-		Caso cCaso = Caso.Create("PruebaTitulo", "PruebaDescripcion", 0, null);
+		Estado eEstado = Estado.Create("Estado");
+		Caso cCaso = Caso.Create("PruebaTitulo", "PruebaDescripcion", 0, eEstado);
+		
 		cCaso.setTitulo("UpdateTitulo");
 		cCaso.setDescripcion("UpdateDescripcion");
 		cCaso.setImportancia(2);
 		cCaso.Update();
+		
 		Caso cCasoUpdated = new Caso(cCaso.getId());
+		
 		assertEquals("UpdateTitulo", cCasoUpdated.getTitulo());
 		assertEquals("UpdateDescripcion", cCasoUpdated.getDescripcion());
 		assertEquals(2, cCasoUpdated.getImportancia());
+		
 		cCasoUpdated.Delete();
+		eEstado.Delete();
 	}
 	
 	@Test
 	public void testDelete() throws Exception{
 		Connection con = null;
 		ResultSet rs = null;
+		Estado eEstado = Estado.Create("Estado");
 		try {
-			Caso cCaso = Caso.Create("TituloDelete", "DescripcionDelete", 0, null);
+			Caso cCaso = Caso.Create("TituloDelete", "DescripcionDelete", 0, eEstado);
 			con = Data.Connection();
 			cCaso.Delete();
+			eEstado.Delete();
 			rs = con.createStatement().executeQuery("SELECT id FROM caso WHERE id = "+cCaso.getId());
 			assertEquals(false, rs.next());
 			assertEquals(true, cCaso.getIsDeleted());	

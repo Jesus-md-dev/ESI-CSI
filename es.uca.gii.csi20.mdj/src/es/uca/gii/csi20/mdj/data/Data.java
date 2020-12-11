@@ -12,6 +12,10 @@ public class Data {
 	
     public static String getPropertiesUrl() { return "./db.properties"; }
 	
+    /**
+     * @return
+     * @throws Exception
+     */
     public static Connection Connection() throws Exception {
 	
         try {
@@ -24,6 +28,12 @@ public class Data {
        catch (Exception ee) { throw ee; }
 	}
     
+    /**
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     @SuppressWarnings("deprecation")
 	public static void LoadDriver() 
         throws InstantiationException, IllegalAccessException, 
@@ -33,16 +43,16 @@ public class Data {
             ).getProperty("jdbc.driverClassName")).newInstance();
     }
     
-    public static String String2Sql(String s, boolean bAddQuotes, boolean bAddWildcards ) {
-    	s = s.replace("'","''");
+    public static String String2Sql(String sString, boolean bAddQuotes, boolean bAddWildcards ) {
+    	sString = sString.replace("'","''");
     	
     	if(bAddWildcards)
-    		s = "%" + s + "%";    	
+    		sString = "%" + sString + "%";    	
     	
     	if(bAddQuotes)
-    		s = "'" + s + "'";
+    		sString = "'" + sString + "'";
     	
-    	return s;
+    	return sString;
     }
     
     public static int Boolean2Sql(boolean b) {
@@ -52,6 +62,11 @@ public class Data {
     		return 0;
     }
     
+    /**
+     * @param con
+     * @return
+     * @throws Exception
+     */
     public static int LastId(Connection con) throws Exception {
     	ResultSet rs = null;
     	

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-11-2020 a las 12:19:25
+-- Tiempo de generación: 09-12-2020 a las 00:19:54
 -- Versión del servidor: 8.0.17
 -- Versión de PHP: 7.3.10
 
@@ -32,6 +32,7 @@ USE `csi20mdj`;
 
 CREATE TABLE `caso` (
   `id` int(11) NOT NULL,
+  `Id_Estado` int(11) NOT NULL,
   `Titulo` varchar(100) NOT NULL,
   `Descripcion` varchar(200) NOT NULL,
   `Importancia` int(1) NOT NULL
@@ -41,9 +42,29 @@ CREATE TABLE `caso` (
 -- Volcado de datos para la tabla `caso`
 --
 
-INSERT INTO `caso` (`id`, `Titulo`, `Descripcion`, `Importancia`) VALUES
-(1, 'Desaparición hombre 30 años', 'Desaparicion misteriosa', 5),
-(2, 'Asesinato persona', 'cuerpo sin identificar encontrado', 0);
+INSERT INTO `caso` (`id`, `Id_Estado`, `Titulo`, `Descripcion`, `Importancia`) VALUES
+(1, 1, 'Desaparición hombre 30 años', 'Desaparicion misteriosa', 5),
+(2, 2, 'Asesinato persona', 'cuerpo sin identificar encontrado', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estado`
+--
+
+CREATE TABLE `estado` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `estado`
+--
+
+INSERT INTO `estado` (`id`, `nombre`) VALUES
+(1, 'Abierto'),
+(2, 'Cerrado'),
+(3, 'Prescrito');
 
 --
 -- Índices para tablas volcadas
@@ -56,6 +77,12 @@ ALTER TABLE `caso`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `estado`
+--
+ALTER TABLE `estado`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -63,4 +90,15 @@ ALTER TABLE `caso`
 -- AUTO_INCREMENT de la tabla `caso`
 --
 ALTER TABLE `caso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT de la tabla `estado`
+--
+ALTER TABLE `estado`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
