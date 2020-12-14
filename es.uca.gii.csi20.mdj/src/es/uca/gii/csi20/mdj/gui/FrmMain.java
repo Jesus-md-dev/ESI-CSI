@@ -10,9 +10,13 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class FrmMain {
+	
+	static List<IfrCaso> lOpenCasos = new ArrayList<IfrCaso>();
 
 	private JFrame frame;
 

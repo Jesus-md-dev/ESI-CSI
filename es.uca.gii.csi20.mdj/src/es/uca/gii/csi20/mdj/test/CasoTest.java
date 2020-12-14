@@ -112,6 +112,12 @@ public class CasoTest {
 		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
 		assertEquals(3, cCaso.getImportancia());
 		
+		alCasoList = Caso.Select("rue", "bades", 3, "sta");
+		cCaso = alCasoList.get(0);
+		assertEquals("PruebaTitulo", cCaso.getTitulo());
+		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
+		assertEquals(3, cCaso.getImportancia());
+		
 		cCaso.Delete();
 		eEstado.Delete();
 	}

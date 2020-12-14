@@ -120,4 +120,6 @@ public class IfrCaso extends JInternalFrame {
 		butSave.setBounds(81, 134, 89, 23);
 		getContentPane().add(butSave);
 	}
+	
+	public Caso getCaso() { return _cCaso; }
 }

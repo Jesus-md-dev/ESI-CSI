@@ -3,8 +3,8 @@ package es.uca.gii.csi20.mdj.data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
-import java.util.StringJoiner;
 
 public class Caso extends Entity{
 	private String _sTitulo;
@@ -83,38 +83,6 @@ public class Caso extends Entity{
 	 * @param iImportancia
 	 * @param sEstado
 	 * @return
-	 */
-	private static String Where(String sTitulo, String sDescripcion,
-			Integer iImportancia, String sEstado) {
-		String sWhere = "";
-		StringJoiner stringJoinerAnd = new StringJoiner(" AND ");
-		if(sEstado != null) {
-			sWhere = "INNER JOIN estado ON caso.Id_Estado = estado.id WHERE ";
-			stringJoinerAnd.add("estado.Nombre like " + Data.String2Sql(sEstado,
-					true, true));
-		}
-		else
-			sWhere = "WHERE ";
-		
-		if(sTitulo != null) 
-			stringJoinerAnd.add("caso.Titulo like " + Data.String2Sql(sTitulo,
-					true, true));
-		
-		if(sDescripcion != null)
-			stringJoinerAnd.add("Descripcion like " + Data.String2Sql(sDescripcion,
-					true, true));
-		
-		if(iImportancia != null)
-			stringJoinerAnd.add("Importancia = " + iImportancia);
-		return sWhere + stringJoinerAnd;
-	}
-	
-	/**
-	 * @param sTitulo
-	 * @param sDescripcion
-	 * @param iImportancia
-	 * @param sEstado
-	 * @return
 	 * @throws Exception
 	 */
 	public static ArrayList<Caso> Select(String sTitulo, String sDescripcion,
@@ -127,7 +95,21 @@ public class Caso extends Entity{
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery("Select caso.id, caso.Id_Estado, "
 					+ "caso.Titulo, caso.Descripcion, caso.Importancia FROM caso "
-					+ Where(sTitulo, sDescripcion, iImportancia, sEstado));
+					+ "INNER JOIN estado ON caso.Id_Estado = estado.id  "
+					+ Where(
+							new String[] {
+									"caso.Titulo", "caso.Descripcion",
+									"caso.Importancia", "estado.Nombre"
+							},
+							new int[] {
+									Types.VARCHAR, Types.VARCHAR, 
+									Types.INTEGER, Types.VARCHAR
+							}, 
+							new Object[] {
+									sTitulo, sDescripcion, 
+									iImportancia, sEstado
+							}
+							));
 			
 			while(rs.next())
 				alCasoList.add(new Caso(rs.getInt("Id"), rs.getString("Titulo"), rs.getString("Descripcion"),

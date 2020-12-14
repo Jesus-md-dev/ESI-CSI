@@ -107,17 +107,26 @@ public class IfrCasos extends JInternalFrame {
 					
 					Caso cCaso = ((CasosTableModel)tabResult.getModel()).getData(iRow);
 					
-					if (cCaso != null) {
-						IfrCaso ifrCaso;
-						try {
-							ifrCaso = new IfrCaso(cCaso);
-							ifrCaso.setBounds(10, 27, 300, 192);
-							pnlParent.add(ifrCaso, 0);
-							ifrCaso.setVisible(true);
-						} catch (Exception e1) {
-							JOptionPane.showMessageDialog(null, "Error al introducir los datos",
-									"Error", JOptionPane.ERROR_MESSAGE);
-						}
+					if (cCaso != null) {			
+						int iIfrCaso = 0;
+						
+						while(iIfrCaso < FrmMain.lOpenCasos.size() && 
+								FrmMain.lOpenCasos.get(iIfrCaso).getCaso().getId() != cCaso.getId())
+							++iIfrCaso;
+						
+						if(iIfrCaso < FrmMain.lOpenCasos.size()) 
+							FrmMain.lOpenCasos.get(iIfrCaso).setVisible(true);
+						else 
+							try {
+								IfrCaso ifrCaso = new IfrCaso(cCaso);
+								FrmMain.lOpenCasos.add(ifrCaso);
+								ifrCaso.setBounds(10, 27, 300, 192);
+								pnlParent.add(ifrCaso, 0);
+								ifrCaso.setVisible(true);
+							} catch (Exception e1) {
+								JOptionPane.showMessageDialog(null, "Error al introducir los datos",
+										"Error", JOptionPane.ERROR_MESSAGE);
+							}
 					}
 				}
 			}

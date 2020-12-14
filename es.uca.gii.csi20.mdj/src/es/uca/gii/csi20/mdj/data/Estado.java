@@ -3,6 +3,7 @@ package es.uca.gii.csi20.mdj.data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,14 +48,6 @@ public class Estado extends Entity{
 	
 	public void setNombre(String sNombre) { _sNombre = sNombre; }
 	
-	private static String Where(String sNombre) {
-		String sWhere = "";
-		if(sNombre != null)
-				sWhere += " WHERE estado.Nombre like " + Data.String2Sql(sNombre,
-						true, true);
-		return sWhere;
-	}
-	
 	/**
 	 * @param sNombre
 	 * @return
@@ -63,11 +56,20 @@ public class Estado extends Entity{
 	public static List<Estado> Select(String sNombre) throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
-		
 		try {
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery("SELECT id FROM estado" 
-			+ Where(sNombre));
+			+ Where(
+					new String[] {
+							"estado.Nombre"
+					},
+					new int[] {
+							Types.VARCHAR
+					}, 
+					new Object[] {
+							sNombre
+					}
+					));
 			ArrayList<Estado> alEstadoList = new ArrayList<Estado>();
 			
 			while(rs.next()) {
