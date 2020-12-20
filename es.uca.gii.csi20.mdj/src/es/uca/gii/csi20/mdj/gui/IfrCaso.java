@@ -24,7 +24,6 @@ public class IfrCaso extends JInternalFrame {
 	private JTextField txtImportancia;
 	private Caso _cCaso = null;
 
-
 	/**
 	 * Create the frame.
 	 * @throws Exception 

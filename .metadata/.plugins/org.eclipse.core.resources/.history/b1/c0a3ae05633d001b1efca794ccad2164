@@ -1,0 +1,23 @@
+import java.sql.Types;
+
+public class stringbuildertest {
+    public static void main(String args[]) {
+    	StringBuilder stringbuilder = new StringBuilder("Where ");
+        String[] sFields =  new String[] {
+        		"caso.name", "estado.id", "caso.description" 
+        };
+        
+        int[] iValues = new int[] {
+        		Types.VARCHAR, Types.INTEGER, Types.VARCHAR
+        };
+        
+        Object[] oValues = new Object[] {
+        		"juan", 1, null
+        };
+        
+        for(int i = 0; i < sFields.length; ++i) {
+        	System.out.println(oValues[0]);
+        }
+        System.out.println(stringbuilder);
+    }
+}

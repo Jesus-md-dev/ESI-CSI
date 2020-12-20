@@ -7,10 +7,20 @@ import java.sql.Types;
 import java.util.ArrayList;
 
 public class Caso extends Entity{
+	
 	private String _sTitulo;
 	private String _sDescripcion;
 	private int _iImportancia;
 	private Estado _eEstado;
+	
+	public String getTitulo() { return _sTitulo; }
+	public void setTitulo(String sTitulo) { _sTitulo = sTitulo; }
+	public String getDescripcion() { return _sDescripcion; }
+	public void setDescripcion(String sDescripcion) { _sDescripcion = sDescripcion; }
+	public int getImportancia() { return _iImportancia; }
+	public void setImportancia(int iImportancia) { _iImportancia = iImportancia; }
+	public Estado getEstado() { return _eEstado; }
+	public void setEstado(Estado eEstado) { _eEstado = eEstado; }
 	
 	/**
 	 * @param iId
@@ -21,8 +31,8 @@ public class Caso extends Entity{
 		ResultSet rs = null;
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT Id_Estado, Titulo,"
-					+ " Descripcion, Importancia "
+			rs = con.createStatement().executeQuery("SELECT caso.Id_Estado, caso.Titulo, "
+					+ "caso.Descripcion, caso.Importancia "
 					+ "FROM caso WHERE id = " + iId);
 			rs.next();
 						
@@ -33,6 +43,7 @@ public class Caso extends Entity{
 			_eEstado = new Estado(rs.getInt("Id_Estado"));
 			_sTabla = "caso";
 			_iId = iId;
+			
 		} catch ( SQLException e ) { throw e; } 
 		finally {
 			if(rs != null) rs.close();
@@ -41,24 +52,16 @@ public class Caso extends Entity{
 	}
 	
 	private Caso(int iId, String sTitulo, String sDescripcion, int iImportancia, Estado eEstado) {
-		_iId = iId;
 		_sTitulo = sTitulo;
 		_sDescripcion = sDescripcion;
 		_iImportancia = iImportancia;
 		_bIsDeleted = false;
 		_eEstado = eEstado;
 		_sTabla = "caso";
+		_iId = iId;
 	}
 
-	public String getTitulo() { return _sTitulo; }
-	public String getDescripcion() { return _sDescripcion; }
-	public int getImportancia() { return _iImportancia; }
-	public Estado getEstado() { return _eEstado; }
 	
-	public void setTitulo(String sTitulo) { _sTitulo = sTitulo; }
-	public void setDescripcion(String sDescripcion) { _sDescripcion = sDescripcion; }
-	public void setImportancia(int iImportancia) { _iImportancia = iImportancia; }
-	public void setEstado(Estado eEstado) { _eEstado = eEstado; }
 
 	public String toString() {
 		return "Caso" + "@" + _iId + ":" + _sTitulo + ":" + _sDescripcion 
@@ -93,30 +96,17 @@ public class Caso extends Entity{
 		
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("Select caso.id, caso.Id_Estado, "
-					+ "caso.Titulo, caso.Descripcion, caso.Importancia FROM caso "
-					+ "INNER JOIN estado ON caso.Id_Estado = estado.id  "
+			rs = con.createStatement().executeQuery("Select caso.id, caso.Id_Estado, caso.Titulo, caso.Descripcion, caso.Importancia"
+					+ " FROM caso INNER JOIN estado ON caso.Id_Estado = estado.id "
 					+ Where(
-							new String[] {
-									"caso.Titulo", "caso.Descripcion",
-									"caso.Importancia", "estado.Nombre"
-							},
-							new int[] {
-									Types.VARCHAR, Types.VARCHAR, 
-									Types.INTEGER, Types.VARCHAR
-							}, 
-							new Object[] {
-									sTitulo, sDescripcion, 
-									iImportancia, sEstado
-							}
-							));
-			
+							new String[] { "caso.Titulo", "caso.Descripcion", "caso.Importancia", "estado.Nombre" },
+							new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR }, 
+							new Object[] { sTitulo, sDescripcion,  iImportancia, sEstado }));
 			while(rs.next())
 				alCasoList.add(new Caso(rs.getInt("Id"), rs.getString("Titulo"), rs.getString("Descripcion"),
 						rs.getInt("Importancia"), new Estado(rs.getInt("Id_Estado"), con)));
 			
 			return alCasoList;
-			
 		} catch (Exception e) { throw e; }
 		finally {
 			if(rs != null) rs.close();
@@ -137,11 +127,9 @@ public class Caso extends Entity{
 		Connection con = null;
 		try {
 			con = Data.Connection();
-			con.createStatement().executeUpdate("INSERT INTO caso "
-					+ "VALUES (NULL," + eEstado.getId() 
-					+ "," + Data.String2Sql(sTitulo, true, false) + "," 
-					+ Data.String2Sql(sDescripcion, true, false) + ","
-					+ iImportancia + ")");
+			con.createStatement().executeUpdate("INSERT INTO caso (Id_Estado, Titulo, Descripcion, Importancia)"
+					+ "VALUES (" + eEstado.getId() + "," + Data.String2Sql(sTitulo, true, false) + "," 
+					+ Data.String2Sql(sDescripcion, true, false) + "," + iImportancia + ")");
 			return new Caso(Data.LastId(con));
 		}
 		catch (SQLException ee) {throw ee;}

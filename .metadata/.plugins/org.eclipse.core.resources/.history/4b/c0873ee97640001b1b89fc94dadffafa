@@ -1,0 +1,31 @@
+package es.uca.gii.csi20.mdj.gui;
+
+import java.util.List;
+
+import javax.swing.AbstractListModel;
+import javax.swing.ComboBoxModel;
+
+import es.uca.gii.csi20.mdj.data.Estado;
+
+public class EstadoListModel extends AbstractListModel<Estado> implements ComboBoxModel<Estado>{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<Estado> _lData;
+	private Object _oSelectedItem = null;
+	
+	public List<Estado> getData() { return _lData; }
+	public Object getSelectedItem() { return _oSelectedItem; }
+	
+	public void setData(List<Estado> aData) { _lData = aData; }
+	public void setSelectedItem(Object oSelectedItem) { _oSelectedItem = oSelectedItem; }
+	
+	public EstadoListModel(List<Estado> aData) { _lData = aData; }
+	
+	public Estado getElementAt(int iIndex) { return _lData.get(iIndex); }
+	
+	public int getSize() { return _lData.size(); } 
+
+}

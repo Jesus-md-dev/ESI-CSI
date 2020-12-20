@@ -1,6 +1,7 @@
 package es.uca.gii.csi20.mdj.data;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.StringJoiner;
 
@@ -20,39 +21,25 @@ public abstract class Entity {
 		Connection con = null;
 		
 		try {
-			if(_bIsDeleted)
-				throw new Exception("El Caso ya ha sido eliminado");
+			if(_bIsDeleted) throw new IllegalStateException(_sTabla + " " + _iId + " ya eliminado.");
 			
 			con = Data.Connection();
 			con.createStatement().executeUpdate(sQuery);
-		} catch(Exception e) {
-			throw e;
-		}
-		finally {
-			if(con != null) con.close();
-		}
+		} catch(Exception e) { throw e; }
+		finally { if(con != null) con.close(); }
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	public void Delete() throws Exception {
 		Connection con = null;
 		
 		try {
-			if(_bIsDeleted)
-				throw new Exception("El estado ya ha sido eliminado.");
+			if(_bIsDeleted) throw new IllegalStateException(_sTabla + " " + _iId + " ya eliminado.");
 			
 			con = Data.Connection();
-			con.createStatement().executeUpdate("DELETE FROM " + _sTabla + " WHERE id = " 
-			+ _iId + ";");
+			con.createStatement().executeUpdate("DELETE FROM " + _sTabla + " WHERE id = " + _iId + ";");
 			_bIsDeleted = true;
-		} catch(Exception e){
-			throw e;
-		}
-		finally {
-			if(con != null) con.close();
-		}
+		} catch(SQLException e){ throw e; }
+		finally { if(con != null) con.close(); } 
 	}
 	
 	/**
@@ -68,8 +55,7 @@ public abstract class Entity {
         	if(oValues[i] != null)
         		switch(iTypes[i]) {
         			case Types.VARCHAR:
-        				stringjoinerAnd.add(sFields[i] + " like " + Data.String2Sql(oValues[i].toString(),
-        						true, true));
+        				stringjoinerAnd.add(sFields[i] + " like " + Data.String2Sql(oValues[i].toString(), true, true));
         				break;
         			case Types.INTEGER:
         				stringjoinerAnd.add(sFields[i] + " = " + oValues[i]);

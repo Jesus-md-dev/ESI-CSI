@@ -10,6 +10,9 @@ import java.util.List;
 public class Estado extends Entity{
 	private String _sNombre;
 	
+	public String getNombre() { return _sNombre; }
+	public void setNombre(String sNombre) { _sNombre = sNombre; }
+	
 	/**
 	 * @param iId
 	 * @throws Exception
@@ -43,10 +46,6 @@ public class Estado extends Entity{
 			if(rs != null) rs = null;
 		}
 	}
-	
-	public String getNombre() { return _sNombre; }
-	
-	public void setNombre(String sNombre) { _sNombre = sNombre; }
 	
 	/**
 	 * @param sNombre
@@ -96,8 +95,8 @@ public class Estado extends Entity{
 		
 		try {
 			con = Data.Connection();
-			con.createStatement().executeUpdate("INSERT INTO estado "
-					+ "VALUES (NULL," +  Data.String2Sql(sNombre, true, false) + ");");
+			con.createStatement().executeUpdate("INSERT INTO estado (nombre)"
+					+ "VALUES (" +  Data.String2Sql(sNombre, true, false) + ");");
 			
 			return new Estado(Data.LastId(con), con);
 		} 

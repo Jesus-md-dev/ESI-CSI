@@ -1,9 +1,0 @@
-package es.uca.gii.csi20.mdj.gui;
-import java.util.ArrayList;
-
-import javax.swing.table.AbstractTableModel;
-
-public class CasosTableModel {
-	Caso a = new Caso();
-	private ArrayLista<Caso> _aData = new ArrayList<>();
-}

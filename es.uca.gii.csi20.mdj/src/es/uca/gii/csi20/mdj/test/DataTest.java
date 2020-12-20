@@ -15,34 +15,29 @@ import es.uca.gii.csi20.mdj.data.Data;
 class DataTest {
 
 	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-		Data.LoadDriver();
-	}
+	static void setUpBeforeClass() throws Exception { Data.LoadDriver(); }
 
 	@Disabled
 	@Test
 	void testTableAccess() throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
-		int iNumReg;
-		int iIndice = 0;
+		int iRows;
+		int iRowsCounter = 0;
 		
 		try {
 			con = Data.Connection();
-			
 			rs = con.createStatement().executeQuery("SELECT COUNT(id) FROM caso;");
 			rs.next();
-			iNumReg = rs.getInt("COUNT(id)");
+			iRows = rs.getInt("COUNT(id)");
 			rs.close();
 			
 			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso;");
 			while(rs.next()) {
-				System.out.println(rs.getString("id")+" "+rs.getString("Titulo")+" "+rs.getString("Descripcion")
-				+" "+rs.getInt("Importancia"));
-				iIndice++;
-				assertEquals(4,rs.getMetaData().getColumnCount());
+				iRowsCounter++;
+				assertEquals(4, rs.getMetaData().getColumnCount());
 			}
-			assertEquals(iNumReg,iIndice);
+			assertEquals(iRows, iRowsCounter);
 		}
 		catch (SQLException ee) {throw ee;}
 		finally {
@@ -53,15 +48,15 @@ class DataTest {
 	
 	@Test
 	void testString2Sql() {
-		assertEquals("hola",Data.String2Sql("hola", false, false));
-		assertEquals("'hola'",Data.String2Sql("hola", true, false));
-		assertEquals("%hola%",Data.String2Sql("hola", false, true));
-		assertEquals("'%hola%'",Data.String2Sql("hola", true, true));
-		assertEquals("O''Connel",Data.String2Sql("O'Connel", false, false));
-		assertEquals("'O''Connel'",Data.String2Sql("O'Connel", true, false));
-		assertEquals("%''Smith ''%",Data.String2Sql("'Smith '", false, true));
-		assertEquals("'''Smith '''",Data.String2Sql("'Smith '", true, false));
-		assertEquals("'%''Smith ''%'",Data.String2Sql("'Smith '", true, true));
+		assertEquals("hola", Data.String2Sql("hola", false, false));
+		assertEquals("'hola'", Data.String2Sql("hola", true, false));
+		assertEquals("%hola%", Data.String2Sql("hola", false, true));
+		assertEquals("'%hola%'", Data.String2Sql("hola", true, true));
+		assertEquals("O''Connel", Data.String2Sql("O'Connel", false, false));
+		assertEquals("'O''Connel'", Data.String2Sql("O'Connel", true, false));
+		assertEquals("%''Smith ''%", Data.String2Sql("'Smith '", false, true));
+		assertEquals("'''Smith '''", Data.String2Sql("'Smith '", true, false));
+		assertEquals("'%''Smith ''%'", Data.String2Sql("'Smith '", true, true));
 	}
 	
 	@Test

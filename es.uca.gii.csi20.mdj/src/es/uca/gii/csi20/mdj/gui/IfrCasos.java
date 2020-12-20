@@ -80,15 +80,12 @@ public class IfrCasos extends JInternalFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-						tabResult.setModel(
-								new CasosTableModel(
-										Caso.Select(
-												txtTitulo.getText(), 
-												txtDescripcion.getText(), 
-												(txtImportancia.getText().equals("")?null:
-													Integer.parseInt(txtImportancia.getText())),
-												cmbEstado.getSelectedItem() == null?null
-														:cmbEstado.getSelectedItem().toString())));
+						tabResult.setModel(new CasosTableModel(Caso.Select(txtTitulo.getText(), txtDescripcion.getText(),
+								(txtImportancia.getText().equals("") ? null : Integer.parseInt(txtImportancia.getText())), 
+								cmbEstado.getSelectedItem() == null ? null : cmbEstado.getSelectedItem().toString())));
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Se ha introducido un valor no numérico\n " + ex.getMessage() 
+					,"Error", JOptionPane.ERROR_MESSAGE);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Error al introducir los datos",
 							"Error", JOptionPane.ERROR_MESSAGE);

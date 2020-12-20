@@ -1,6 +1,0 @@
-package es.uca.gii.csi20.mdj.gui;
-import javax.swing.table.AbstracTableModel;
-
-public abstract class CasosTableModel {
-
-}

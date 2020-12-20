@@ -1,0 +1,34 @@
+import java.sql.Types;
+import java.util.StringJoiner;
+
+public class stringbuildertest {
+    public static void main(String args[]) {
+    	String sWhere = "WHERE ";
+		StringJoiner stringJoinerAnd = new StringJoiner(" AND ");
+        String[] sFields =  new String[] {
+        		"caso.name", "estado.id", "caso.description" 
+        };
+        
+        int[] iValues = new int[] {
+        		Types.VARCHAR, Types.INTEGER, Types.VARCHAR
+        };
+        
+        Object[] oValues = new Object[] {
+        		"juan", 1, null
+        };
+        
+        for(int i = 0; i < sFields.length; ++i) {
+        	if(oValues[i] != null)
+        		switch(iValues[i]) {
+        			case Types.VARCHAR:
+        				System.out.println(sFields[i] + " like " + iValues[i]);
+        				break;
+        			case Types.INTEGER:
+        				System.out.println(sFields[i] + " = " + iValues[i]);
+        				break;
+        		}
+        		
+        }
+        System.out.println(stringbuilder);
+    }
+}

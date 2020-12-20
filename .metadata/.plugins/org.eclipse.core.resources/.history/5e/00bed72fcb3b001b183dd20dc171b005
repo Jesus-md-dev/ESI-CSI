@@ -1,0 +1,110 @@
+package es.uca.gii.csi20.mdj.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+
+import es.uca.gii.csi20.mdj.data.Data;
+import es.uca.gii.csi20.mdj.data.Estado;
+
+public class EstadoTest {
+	
+	@BeforeAll
+	public void setUpBeforeClass() throws Exception {
+		Data.LoadDriver();
+	}
+	
+	@Test
+	public void testConstructor() throws Exception {
+		Connection con = null;
+		ResultSet rs = null;
+		Estado eEstado;
+		
+		try {
+			con = Data.Connection();
+			rs = con.createStatement().executeQuery("SELECT id, Nombre FROM estado;");
+			rs.next();
+			eEstado = new Estado(rs.getInt("id"), con);
+			
+			assertEquals(rs.getInt("Id"), eEstado.getId());
+			assertEquals(rs.getString("Nombre"), eEstado.getNombre());
+		}
+		catch (SQLException ee) { throw ee; }
+		finally {
+			if (con != null) con.close();
+			if (rs != null) rs.close();
+		}
+	}
+	
+	@Test
+	public void testSelect() throws Exception {
+		List<Estado> alEstadoList = Estado.Select(null);
+		
+		assertEquals("Abierto", alEstadoList.get(0).getNombre());
+		assertEquals("Cerrado", alEstadoList.get(1).getNombre());
+		assertEquals("Prescrito", alEstadoList.get(2).getNombre());
+	}
+	
+	@Test
+	public void testCreate() throws Exception{		
+		Connection con = null;
+		ResultSet rs = null;
+		Estado eEstado;
+		
+		try {
+			con = Data.Connection();
+			
+			eEstado = Estado.Create("Estado");
+			
+			rs = con.createStatement().executeQuery("SELECT id, Nombre FROM estado WHERE id = " + eEstado.getId() + ";");
+			
+			rs.next();
+			
+			assertEquals(rs.getInt("Id"), eEstado.getId());
+			assertEquals(rs.getString("Nombre"), eEstado.getNombre());		
+			
+			con.createStatement().executeUpdate("DELETE FROM estado WHERE id = " + eEstado.getId() + ";");
+		}
+		catch (SQLException ee) { throw ee; }
+		finally {
+			if (con != null) con.close();
+			if (rs != null) rs.close();
+		}
+	}
+	
+	@Test
+	public void testUpdate() throws Exception{
+		Connection con = null;
+		Estado eEstado = Estado.Create("Estado");
+		eEstado.setNombre("UpdateEstado");
+		eEstado.Update();
+		con = Data.Connection();
+		Estado eEstadoUpdate = new Estado(eEstado.getId(), con);
+		assertEquals("UpdateEstado", eEstadoUpdate.getNombre());
+		eEstado.Delete();
+	}
+	
+	@Test
+	public void testDelete() throws Exception{
+		Connection con = null;
+		ResultSet rs = null;
+		try {
+			Estado eEstado = Estado.Create("NombreDelete");
+			con = Data.Connection();
+			eEstado.Delete();
+			rs = con.createStatement().executeQuery("SELECT id FROM caso WHERE id = "+eEstado.getId());
+			assertEquals(false, rs.next());
+			assertEquals(true, eEstado.getIsDeleted());	
+		} catch (SQLException e) { throw e; }
+		finally {
+			if (con != null) con.close();
+			if (rs != null) rs.close();
+		}
+	}
+}

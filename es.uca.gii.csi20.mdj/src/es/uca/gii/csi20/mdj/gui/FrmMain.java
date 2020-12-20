@@ -30,7 +30,8 @@ public class FrmMain {
 					FrmMain window = new FrmMain();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error",
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

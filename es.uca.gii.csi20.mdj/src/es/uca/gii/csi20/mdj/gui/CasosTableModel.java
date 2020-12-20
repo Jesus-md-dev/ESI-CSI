@@ -12,9 +12,7 @@ public class CasosTableModel extends AbstractTableModel{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Caso> _aData = new ArrayList<>();
 	
-	public CasosTableModel(ArrayList<Caso> aData) {
-		_aData = aData;
-	}
+	public CasosTableModel(ArrayList<Caso> aData) { _aData = aData; }
 
 	@Override
 	public int getColumnCount() { return 4;	}
@@ -23,18 +21,13 @@ public class CasosTableModel extends AbstractTableModel{
 	public int getRowCount() { return _aData.size(); }
 
 	@Override
-	public Object getValueAt(int iRow, int iCol) {		
+	public Object getValueAt(int iRow, int iCol) {
 		switch (iCol) {
-			case 0:
-				return _aData.get(iRow).getTitulo();
-			case 1:
-				return _aData.get(iRow).getDescripcion();
-			case 2:
-				return _aData.get(iRow).getImportancia();
-			case 3:
-				return _aData.get(iRow).getEstado();
-			default:
-				return null;
+			case 0: return _aData.get(iRow).getTitulo();
+			case 1: return _aData.get(iRow).getDescripcion();
+			case 2: return _aData.get(iRow).getImportancia();
+			case 3: return _aData.get(iRow).getEstado();
+			default: return null;
 		}
 	}
 	

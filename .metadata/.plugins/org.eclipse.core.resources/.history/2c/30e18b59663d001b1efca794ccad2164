@@ -1,0 +1,167 @@
+package es.uca.gii.csi20.mdj.data;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.StringJoiner;
+
+public class Caso extends Entity{
+	private String _sTitulo;
+	private String _sDescripcion;
+	private int _iImportancia;
+	private Estado _eEstado;
+	
+	/**
+	 * @param iId
+	 * @throws Exception
+	 */
+	public Caso(int iId) throws Exception {
+		Connection con = null;
+		ResultSet rs = null;
+		try {
+			con = Data.Connection();
+			rs = con.createStatement().executeQuery("SELECT Id_Estado, Titulo,"
+					+ " Descripcion, Importancia "
+					+ "FROM caso WHERE id = " + iId);
+			rs.next();
+						
+			_sTitulo = rs.getString("Titulo");
+			_sDescripcion = rs.getString("Descripcion");
+			_iImportancia = rs.getInt("Importancia");
+			_bIsDeleted = false;
+			_eEstado = new Estado(rs.getInt("Id_Estado"));
+			_sTabla = "caso";
+			_iId = iId;
+		} catch ( SQLException e ) { throw e; } 
+		finally {
+			if(rs != null) rs.close();
+			if(con != null) con.close();
+		}
+	}
+	
+	private Caso(int iId, String sTitulo, String sDescripcion, int iImportancia, Estado eEstado) {
+		_iId = iId;
+		_sTitulo = sTitulo;
+		_sDescripcion = sDescripcion;
+		_iImportancia = iImportancia;
+		_bIsDeleted = false;
+		_eEstado = eEstado;
+		_sTabla = "caso";
+	}
+
+	public String getTitulo() { return _sTitulo; }
+	public String getDescripcion() { return _sDescripcion; }
+	public int getImportancia() { return _iImportancia; }
+	public Estado getEstado() { return _eEstado; }
+	
+	public void setTitulo(String sTitulo) { _sTitulo = sTitulo; }
+	public void setDescripcion(String sDescripcion) { _sDescripcion = sDescripcion; }
+	public void setImportancia(int iImportancia) { _iImportancia = iImportancia; }
+	public void setEstado(Estado eEstado) { _eEstado = eEstado; }
+
+	public String toString() {
+		return "Caso" + "@" + _iId + ":" + _sTitulo + ":" + _sDescripcion 
+				+ ":" + _iImportancia + ":" + _eEstado;
+	}
+	
+	/**
+	 * @throws Exception
+	 */
+	public void Update() throws Exception {
+		super.Update("UPDATE caso SET"
+				+ " Titulo = " + Data.String2Sql(_sTitulo, true, false)
+				+ ", Descripcion = " + Data.String2Sql(_sDescripcion, true, false)
+				+ ", Importancia = " + _iImportancia
+				+ ", Id_Estado = " + _eEstado.getId()
+				+ " WHERE id = " + _iId);
+	}
+	
+	/**
+	 * @param sTitulo
+	 * @param sDescripcion
+	 * @param iImportancia
+	 * @param sEstado
+	 * @return
+	 */
+	private static String Where(String sTitulo, String sDescripcion,
+			Integer iImportancia, String sEstado) {
+		String sWhere = "WHERE ";
+		StringJoiner stringJoinerAnd = new StringJoiner(" AND ");
+		if(sEstado != null) 
+			stringJoinerAnd.add("estado.Nombre like " + Data.String2Sql(sEstado,
+					true, true));
+		
+		if(sTitulo != null) 
+			stringJoinerAnd.add("caso.Titulo like " + Data.String2Sql(sTitulo,
+					true, true));
+		
+		if(sDescripcion != null)
+			stringJoinerAnd.add("Descripcion like " + Data.String2Sql(sDescripcion,
+					true, true));
+		
+		if(iImportancia != null)
+			stringJoinerAnd.add("Importancia = " + iImportancia);
+		return sWhere + stringJoinerAnd;
+	}
+	
+	/**
+	 * @param sTitulo
+	 * @param sDescripcion
+	 * @param iImportancia
+	 * @param sEstado
+	 * @return
+	 * @throws Exception
+	 */
+	public static ArrayList<Caso> Select(String sTitulo, String sDescripcion,
+			Integer iImportancia, String sEstado) throws Exception {
+		Connection con = null;
+		ResultSet rs = null;
+		ArrayList<Caso> alCasoList = new ArrayList<Caso>();
+		
+		try {
+			con = Data.Connection();
+			rs = con.createStatement().executeQuery("Select caso.id, caso.Id_Estado, "
+					+ "caso.Titulo, caso.Descripcion, caso.Importancia "
+					+ "FROM caso INNER JOIN estado ON caso.Id_Estado = estado.id"
+					+ Where(sTitulo, sDescripcion, iImportancia, sEstado));
+			
+			while(rs.next())
+				alCasoList.add(new Caso(rs.getInt("Id"), rs.getString("Titulo"), rs.getString("Descripcion"),
+						rs.getInt("Importancia"), new Estado(rs.getInt("Id_Estado"), con)));
+			
+			return alCasoList;
+			
+		} catch (Exception e) { throw e; }
+		finally {
+			if(rs != null) rs.close();
+			if(con != null) con.close();
+		}
+	}
+	
+	/**
+	 * @param sTitulo
+	 * @param sDescripcion
+	 * @param iImportancia
+	 * @param eEstado
+	 * @return
+	 * @throws Exception
+	 */
+	public static Caso Create(String sTitulo, String sDescripcion, int iImportancia,
+			Estado eEstado) throws Exception {
+		Connection con = null;
+		try {
+			con = Data.Connection();
+			con.createStatement().executeUpdate("INSERT INTO caso "
+					+ "VALUES (NULL," + eEstado.getId() 
+					+ "," + Data.String2Sql(sTitulo, true, false) + "," 
+					+ Data.String2Sql(sDescripcion, true, false) + ","
+					+ iImportancia + ")");
+			return new Caso(Data.LastId(con));
+		}
+		catch (SQLException ee) {throw ee;}
+		finally {
+			if(con != null) con.close();
+		}
+	}
+}

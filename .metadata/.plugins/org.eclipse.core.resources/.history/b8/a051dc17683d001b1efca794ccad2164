@@ -1,0 +1,117 @@
+package es.uca.gii.csi20.mdj.data;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Estado extends Entity{
+	private String _sNombre;
+	
+	/**
+	 * @param iId
+	 * @throws Exception
+	 */
+	public Estado(int iId) throws Exception {
+		Connection con = null;
+		try {
+			con = Data.Connection();
+			Initialize(iId, con);
+		} catch(Exception e) { throw e; }
+		finally {
+			if(con != null) con = null;
+		}
+	}
+	
+	public Estado(int iId, Connection con) throws Exception {
+		Initialize(iId, con);
+	}
+	
+	private void Initialize(int iId, Connection con) throws Exception {
+		ResultSet rs = null;
+		try {
+			rs = con.createStatement().executeQuery("SELECT nombre "
+					+ "FROM estado Where id = " + iId);
+			rs.next();
+			_sNombre = rs.getString("Nombre");
+			_iId = iId;
+			_sTabla = "estado";
+		} catch(Exception e) { throw e; }
+		finally {
+			if(rs != null) rs = null;
+		}
+	}
+	
+	public String getNombre() { return _sNombre; }
+	
+	public void setNombre(String sNombre) { _sNombre = sNombre; }
+	
+	/**
+	 * @param sNombre
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Estado> Select(String sNombre) throws Exception {
+		Connection con = null;
+		ResultSet rs = null;
+		try {
+			con = Data.Connection();
+			rs = con.createStatement().executeQuery("SELECT id FROM estado" 
+			+ super.Where(
+					new String[] {
+							"estado.Nombre"
+					},
+					new int[] {
+							Type.VARCHAR
+					}, 
+					new Object[] {
+							
+					}
+					));
+			ArrayList<Estado> alEstadoList = new ArrayList<Estado>();
+			
+			while(rs.next()) {
+				alEstadoList.add(new Estado(rs.getInt("id"), con));
+			}
+			
+			return alEstadoList;
+		} catch(Exception e) { throw e; }
+		finally {
+			if(rs != null) rs = null;
+			if(con != null) con = null;
+		}
+	}
+	
+	public String toString() { return _sNombre; }
+	
+	/**
+	 * @param sNombre
+	 * @return
+	 * @throws Exception
+	 */
+	public static Estado Create(String sNombre) throws Exception {
+		Connection con = null;
+		
+		try {
+			con = Data.Connection();
+			con.createStatement().executeUpdate("INSERT INTO estado "
+					+ "VALUES (NULL," +  Data.String2Sql(sNombre, true, false) + ");");
+			
+			return new Estado(Data.LastId(con), con);
+		} 
+		catch (SQLException ee) {throw ee;}
+		finally {
+			if(con != null) con.close();
+		}
+	}
+	
+	/**
+	 * @throws Exception
+	 */
+	public void Update() throws Exception {
+		super.Update("UPDATE estado SET"
+					+ " Nombre = " + Data.String2Sql(_sNombre, true, false)
+					+ " WHERE id = " + _iId);
+	}	
+}

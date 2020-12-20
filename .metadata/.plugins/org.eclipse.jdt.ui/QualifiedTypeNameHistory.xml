@@ -4,12 +4,20 @@
     <fullyQualifiedTypeName name="org.junit.jupiter.api.Disabled"/>
     <fullyQualifiedTypeName name="es.uca.gii.csi20.mdj.data.Data"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeAll"/>
-    <fullyQualifiedTypeName name="org.junit.Test"/>
-    <fullyQualifiedTypeName name="java.sql.Connection"/>
-    <fullyQualifiedTypeName name="java.sql.SQLException"/>
-    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
-    <fullyQualifiedTypeName name="es.uca.gii.csi20.mdj.data.Caso"/>
     <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
     <fullyQualifiedTypeName name="java.awt.Container"/>
+    <fullyQualifiedTypeName name="java.sql.Connection"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
+    <fullyQualifiedTypeName name="org.junit.Test"/>
+    <fullyQualifiedTypeName name="javax.swing.AbstractListModel"/>
+    <fullyQualifiedTypeName name="javax.swing.ComboBoxModel"/>
+    <fullyQualifiedTypeName name="com.sun.tools.javac.util.List"/>
+    <fullyQualifiedTypeName name="java.util.StringJoiner"/>
+    <fullyQualifiedTypeName name="es.uca.gii.csi20.mdj.data.Estado"/>
+    <fullyQualifiedTypeName name="javax.lang.model.util.Types"/>
+    <fullyQualifiedTypeName name="java.sql.Types"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="es.uca.gii.csi20.mdj.data.Caso"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.sql.SQLException"/>
 </qualifiedTypeNameHistroy>
