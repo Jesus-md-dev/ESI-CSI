@@ -11,7 +11,7 @@ public class Caso extends Entity{
 	private String _sTitulo;
 	private String _sDescripcion;
 	private int _iImportancia;
-	private Estado _eEstado;
+	private Estado _estado;
 	
 	public String getTitulo() { return _sTitulo; }
 	public void setTitulo(String sTitulo) { _sTitulo = sTitulo; }
@@ -19,8 +19,8 @@ public class Caso extends Entity{
 	public void setDescripcion(String sDescripcion) { _sDescripcion = sDescripcion; }
 	public int getImportancia() { return _iImportancia; }
 	public void setImportancia(int iImportancia) { _iImportancia = iImportancia; }
-	public Estado getEstado() { return _eEstado; }
-	public void setEstado(Estado eEstado) { _eEstado = eEstado; }
+	public Estado getEstado() { return _estado; }
+	public void setEstado(Estado estado) { _estado = estado; }
 	
 	/**
 	 * @param iId
@@ -39,10 +39,10 @@ public class Caso extends Entity{
 			_sTitulo = rs.getString("Titulo");
 			_sDescripcion = rs.getString("Descripcion");
 			_iImportancia = rs.getInt("Importancia");
-			__bIsDeleted = false;
-			_eEstado = new Estado(rs.getInt("Id_Estado"));
-			__sTabla = "caso";
-			__iId = iId;
+			_estado = new Estado(rs.getInt("Id_Estado"));
+			setIsDeleted(false);
+			setTable("caso");
+			setId(iId);
 			
 		} catch ( SQLException e ) { throw e; } 
 		finally {
@@ -51,19 +51,19 @@ public class Caso extends Entity{
 		}
 	}
 	
-	private Caso(int iId, String sTitulo, String sDescripcion, int iImportancia, Estado eEstado) {
+	private Caso(int iId, String sTitulo, String sDescripcion, int iImportancia, Estado estado) {
 		_sTitulo = sTitulo;
 		_sDescripcion = sDescripcion;
 		_iImportancia = iImportancia;
-		__bIsDeleted = false;
-		_eEstado = eEstado;
-		__sTabla = "caso";
-		__iId = iId;
+		_estado = estado;
+		setIsDeleted(false);
+		setTable("caso");
+		setId(iId);
 	}
 
 	public String toString() {
-		return "Caso" + "@" + __iId + ":" + _sTitulo + ":" + _sDescripcion 
-				+ ":" + _iImportancia + ":" + _eEstado;
+		return "Caso" + "@" + getId() + ":" + _sTitulo + ":" + _sDescripcion 
+				+ ":" + _iImportancia + ":" + _estado;
 	}
 	
 	public void Update() throws Exception {
@@ -71,8 +71,8 @@ public class Caso extends Entity{
 				+ " Titulo = " + Data.String2Sql(_sTitulo, true, false)
 				+ ", Descripcion = " + Data.String2Sql(_sDescripcion, true, false)
 				+ ", Importancia = " + _iImportancia
-				+ ", Id_Estado = " + _eEstado.getId()
-				+ " WHERE id = " + __iId);
+				+ ", Id_Estado = " + _estado.getId()
+				+ " WHERE id = " + getId());
 	}
 	
 	/**
@@ -87,7 +87,7 @@ public class Caso extends Entity{
 			Integer iImportancia, String sEstado) throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
-		ArrayList<Caso> acCaso = new ArrayList<Caso>();
+		ArrayList<Caso> aCaso = new ArrayList<Caso>();
 		
 		try {
 			con = Data.Connection();
@@ -99,10 +99,10 @@ public class Caso extends Entity{
 							new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR }, 
 							new Object[] { sTitulo, sDescripcion,  iImportancia, sEstado }));
 			while(rs.next())
-				acCaso.add(new Caso(rs.getInt("Id"), rs.getString("Titulo"), rs.getString("Descripcion"),
+				aCaso.add(new Caso(rs.getInt("Id"), rs.getString("Titulo"), rs.getString("Descripcion"),
 						rs.getInt("Importancia"), new Estado(rs.getInt("Id_Estado"), con)));
 			
-			return acCaso;
+			return aCaso;
 		} catch (Exception e) { throw e; }
 		finally {
 			if(rs != null) rs.close();
@@ -114,17 +114,17 @@ public class Caso extends Entity{
 	 * @param sTitulo
 	 * @param sDescripcion
 	 * @param iImportancia
-	 * @param eEstado
+	 * @param estado
 	 * @return
 	 * @throws Exception
 	 */
 	public static Caso Create(String sTitulo, String sDescripcion, int iImportancia,
-			Estado eEstado) throws Exception {
+			Estado estado) throws Exception {
 		Connection con = null;
 		try {
 			con = Data.Connection();
 			con.createStatement().executeUpdate("INSERT INTO caso (Id_Estado, Titulo, Descripcion, Importancia)"
-					+ "VALUES (" + eEstado.getId() + "," + Data.String2Sql(sTitulo, true, false) + "," 
+					+ "VALUES (" + estado.getId() + "," + Data.String2Sql(sTitulo, true, false) + "," 
 					+ Data.String2Sql(sDescripcion, true, false) + "," + iImportancia + ")");
 			return new Caso(Data.LastId(con));
 		}

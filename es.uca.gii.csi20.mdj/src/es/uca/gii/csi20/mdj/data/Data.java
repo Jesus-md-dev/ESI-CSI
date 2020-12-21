@@ -31,17 +31,14 @@ public class Data {
             ).getProperty("jdbc.driverClassName")).newInstance();
     }
     
-    public static String String2Sql(String s, boolean bAddQuotes, boolean bAddWildcards ) {
-    	s = s.replace("'","''");
+    public static String String2Sql(String s, boolean bAddQuotes, boolean bAddWildcards) {
+    	s = s.replace("'", "''");
     	if(bAddWildcards) s = "%" + s + "%";    	
     	if(bAddQuotes) s = "'" + s + "'";
     	return s;
     }
     
-    public static int Boolean2Sql(boolean b) {
-    	if(b) return 1;
-    	return 0;
-    }
+    public static int Boolean2Sql(boolean b) { return b ? 1 : 0; }
     
     /**
      * @param con
@@ -61,5 +58,4 @@ public class Data {
     	catch (Exception ee) { throw ee; }
     	finally { if(rs != null) rs.close(); }
     }
-    
 }

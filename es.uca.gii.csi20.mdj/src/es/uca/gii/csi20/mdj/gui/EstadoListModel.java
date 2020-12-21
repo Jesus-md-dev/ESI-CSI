@@ -13,10 +13,8 @@ public class EstadoListModel extends AbstractListModel<Estado> implements ComboB
 	private List<Estado> _aData;
 	private Object _oSelectedItem = null;
 	
-	public List<Estado> getData() { return _aData; }
 	public Object getSelectedItem() { return _oSelectedItem; }
 	
-	public void setData(List<Estado> aData) { _aData = aData; }
 	public void setSelectedItem(Object oSelectedItem) { _oSelectedItem = oSelectedItem; }
 	
 	public EstadoListModel(List<Estado> aData) { _aData = aData; }

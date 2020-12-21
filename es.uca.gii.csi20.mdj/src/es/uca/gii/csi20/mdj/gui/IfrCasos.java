@@ -68,18 +68,18 @@ public class IfrCasos extends JInternalFrame {
 		panel.add(lblEstado);
 		
 		JComboBox<Estado> cmbEstado = new JComboBox<Estado>();
-		cmbEstado.setModel(
-				new EstadoListModel(Estado.Select(null)));
+		cmbEstado.setModel(new EstadoListModel(Estado.Select(null)));
 		cmbEstado.setEditable(true);
 		panel.add(cmbEstado);
 			
-		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
+		JButton butBuscar = new JButton("Buscar");
+		butBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-						tabResult.setModel(new CasosTableModel(Caso.Select(txtTitulo.getText(), txtDescripcion.getText(),
-								(txtImportancia.getText().equals("") ? null : Integer.parseInt(txtImportancia.getText())), 
-								cmbEstado.getSelectedItem() == null ? null : cmbEstado.getSelectedItem().toString())));
+					tabResult.setModel(new CasosTableModel(Caso.Select(txtTitulo.getText(), 
+						txtDescripcion.getText(),
+						(txtImportancia.getText().equals("") ? null : Integer.parseInt(txtImportancia.getText())), 
+						cmbEstado.getSelectedItem() == null ? null : cmbEstado.getSelectedItem().toString())));
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Se ha introducido un valor no numérico\n " + ex.getMessage() 
 					,"Error", JOptionPane.ERROR_MESSAGE);
@@ -90,7 +90,7 @@ public class IfrCasos extends JInternalFrame {
 			}
 		});
 		
-		panel.add(btnBuscar);
+		panel.add(butBuscar);
 		
 		tabResult = new JTable();
 		tabResult.addMouseListener(new MouseAdapter() {
@@ -98,21 +98,21 @@ public class IfrCasos extends JInternalFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int iRow = ((JTable)e.getSource()).getSelectedRow();
-					Caso cCaso = ((CasosTableModel)tabResult.getModel()).getData(iRow);
+					Caso caso = ((CasosTableModel)tabResult.getModel()).getData(iRow);
 					
-					if (cCaso != null) {			
-						int iIfrCaso = 0;
+					if (caso != null) {			
+						int i = 0;
 						
-						while(iIfrCaso < FrmMain.lOpenCasos.size() && 
-								FrmMain.lOpenCasos.get(iIfrCaso).getCaso().getId() != cCaso.getId())
-							++iIfrCaso;
+						while(i < FrmMain.getIfrCasos().size() && 
+								FrmMain.getIfrCasos().get(i).getCaso().getId() != caso.getId())
+							++i;
 						
-						if(iIfrCaso < FrmMain.lOpenCasos.size()) 
-							FrmMain.lOpenCasos.get(iIfrCaso).setVisible(true);
+						if(i < FrmMain.getIfrCasos().size()) 
+							FrmMain.getIfrCasos().get(i).setVisible(true);
 						else 
 							try {
-								IfrCaso ifrCaso = new IfrCaso(cCaso);
-								FrmMain.lOpenCasos.add(ifrCaso);
+								IfrCaso ifrCaso = new IfrCaso(caso);
+								FrmMain.addIfrCaso(ifrCaso);
 								ifrCaso.setBounds(10, 27, 300, 192);
 								pnlParent.add(ifrCaso, 0);
 								ifrCaso.setVisible(true);

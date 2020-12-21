@@ -32,10 +32,10 @@ class DataTest {
 			iRows = rs.getInt("COUNT(id)");
 			rs.close();
 			
-			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso;");
+			rs = con.createStatement().executeQuery("SELECT Id, Id_Estado, Titulo, Descripcion, Importancia FROM caso;");
 			while(rs.next()) {
 				iRowsCounter++;
-				assertEquals(4, rs.getMetaData().getColumnCount());
+				assertEquals(5, rs.getMetaData().getColumnCount());
 			}
 			assertEquals(iRows, iRowsCounter);
 		}

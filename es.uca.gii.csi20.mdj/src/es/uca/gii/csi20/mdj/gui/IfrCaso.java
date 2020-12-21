@@ -20,13 +20,15 @@ public class IfrCaso extends JInternalFrame {
 	private JTextField txtTitulo;
 	private JTextField txtDescripcion;
 	private JTextField txtImportancia;
-	private Caso _cCaso = null;
+	private Caso _caso = null;
+	
+	public Caso getCaso() { return _caso; }
 
 	/**
 	 * Create the frame.
 	 * @throws Exception 
 	 */
-	public IfrCaso(Caso cCaso) throws Exception {
+	public IfrCaso(Caso caso) throws Exception {
 		setResizable(true);
 		setClosable(true);
 		setTitle("Caso");
@@ -71,12 +73,12 @@ public class IfrCaso extends JInternalFrame {
 		lblEstado.setBounds(10, 105, 46, 14);
 		getContentPane().add(lblEstado);
 		
-		_cCaso = cCaso;
-		if(_cCaso != null) {
-			txtTitulo.setText(_cCaso.getTitulo());
-			txtDescripcion.setText(_cCaso.getDescripcion());
-			txtImportancia.setText(Integer.toString(_cCaso.getImportancia()));
-			cmbEstado.getModel().setSelectedItem(_cCaso.getEstado());
+		_caso = caso;
+		if(_caso != null) {
+			txtTitulo.setText(_caso.getTitulo());
+			txtDescripcion.setText(_caso.getDescripcion());
+			txtImportancia.setText(Integer.toString(_caso.getImportancia()));
+			cmbEstado.getModel().setSelectedItem(_caso.getEstado());
 		}
 		
 		IfrCaso ifrCasoRef = this;
@@ -85,42 +87,40 @@ public class IfrCaso extends JInternalFrame {
 		butSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Estado eEstado = (Estado) cmbEstado.getSelectedItem();
+					Estado estado = (Estado) cmbEstado.getSelectedItem();
 					
 					if(txtTitulo.getText().isEmpty())
-						throw new IllegalStateException("Título Vacio");
+						throw new IllegalStateException("Título Vacío");
 					if(txtDescripcion.getText().isEmpty())
-						throw new IllegalStateException("Descripción Vacia");
+						throw new IllegalStateException("Descripción Vacía");
 					if(txtImportancia.getText().isEmpty())
-						throw new IllegalStateException("Importancia Vacia");
-					if(eEstado == null)
+						throw new IllegalStateException("Importancia Vacía");
+					if(estado == null)
 						throw new IllegalStateException("Estado sin elegir");
 					
-					if(_cCaso == null) {
-						_cCaso = Caso.Create(txtTitulo.getText(), txtDescripcion.getText(), 
-								Integer.parseInt(txtImportancia.getText()), eEstado);
-						FrmMain.lOpenCasos.add(ifrCasoRef);
+					if(_caso == null) {
+						_caso = Caso.Create(txtTitulo.getText(), txtDescripcion.getText(), 
+								Integer.parseInt(txtImportancia.getText()), estado);
+						FrmMain.addIfrCaso(ifrCasoRef);
 					}
 					else {
-						_cCaso.setTitulo(txtTitulo.getText());
-						_cCaso.setDescripcion(txtDescripcion.getText());
-						_cCaso.setImportancia(Integer.parseInt(txtImportancia.getText()));
-						_cCaso.setEstado(eEstado);
-						_cCaso.Update();
+						_caso.setTitulo(txtTitulo.getText());
+						_caso.setDescripcion(txtDescripcion.getText());
+						_caso.setImportancia(Integer.parseInt(txtImportancia.getText()));
+						_caso.setEstado(estado);
+						_caso.Update();
 					}
 				} catch(IllegalStateException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage() ,"Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Se ha introducido un valor no numérico\n " + ex.getMessage() 
-					,"Error", JOptionPane.ERROR_MESSAGE);
+					, "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (Exception ex) { 
-					JOptionPane.showMessageDialog(null, ex.getMessage() ,"Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		butSave.setBounds(81, 134, 89, 23);
 		getContentPane().add(butSave);
 	}
-	
-	public Caso getCaso() { return _cCaso; }
 }

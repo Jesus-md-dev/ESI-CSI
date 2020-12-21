@@ -35,8 +35,8 @@ public class Estado extends Entity{
 					+ "FROM estado Where id = " + iId);
 			rs.next();
 			_sNombre = rs.getString("Nombre");
-			__iId = iId;
-			__sTabla = "estado";
+			setId(iId);
+			setTable("estado");
 		} catch(Exception e) { throw e; }
 		finally { if(rs != null) rs = null; }
 	}
@@ -49,7 +49,7 @@ public class Estado extends Entity{
 	public static List<Estado> Select(String sNombre) throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
-		ArrayList<Estado> aeEstado = new ArrayList<Estado>();
+		ArrayList<Estado> aEstado = new ArrayList<Estado>();
 		
 		try {
 			con = Data.Connection();
@@ -57,8 +57,8 @@ public class Estado extends Entity{
 			+ Where(new String[] { "estado.Nombre" },
 					new int[] { Types.VARCHAR	}, 
 					new Object[] { sNombre }));
-			while(rs.next()) { aeEstado.add(new Estado(rs.getInt("id"), con)); }
-			return aeEstado;
+			while(rs.next()) aEstado.add(new Estado(rs.getInt("id"), con));
+			return aEstado;
 		} catch(Exception e) { throw e; }
 		finally {
 			if(rs != null) rs = null;
@@ -78,7 +78,7 @@ public class Estado extends Entity{
 		
 		try {
 			con = Data.Connection();
-			con.createStatement().executeUpdate("INSERT INTO estado (nombre)"
+			con.createStatement().executeUpdate("INSERT INTO estado (Nombre)"
 					+ "VALUES (" +  Data.String2Sql(sNombre, true, false) + ");");
 			return new Estado(Data.LastId(con), con);
 		} 
@@ -88,6 +88,6 @@ public class Estado extends Entity{
 	
 	public void Update() throws Exception {
 		super.Update("UPDATE estado SET Nombre = " + Data.String2Sql(_sNombre, true, false)
-					+ " WHERE id = " + __iId);
+					+ " WHERE id = " + getId());
 	}
 }

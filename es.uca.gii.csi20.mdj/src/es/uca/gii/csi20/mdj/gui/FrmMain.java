@@ -16,7 +16,11 @@ import java.awt.event.ActionEvent;
 
 public class FrmMain {
 	
-	static List<IfrCaso> lOpenCasos = new ArrayList<IfrCaso>();
+	private static List<IfrCaso> _aIfrCaso = new ArrayList<IfrCaso>();
+	
+	public static List<IfrCaso> getIfrCasos() { return _aIfrCaso; }
+	
+	public static void addIfrCaso(IfrCaso ifrCaso) { _aIfrCaso.add(ifrCaso); }
 
 	private JFrame frame;
 

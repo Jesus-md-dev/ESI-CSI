@@ -6,13 +6,17 @@ import java.sql.Types;
 import java.util.StringJoiner;
 
 public abstract class Entity {
-	protected int __iId;
-	protected boolean __bIsDeleted = false;
-	protected String __sTabla;
+	private int _iId;
+	private boolean _bIsDeleted = false;
+	private String _sTable;
 	
-	public int getId() { return __iId; }
-	public boolean getIsDeleted() { return __bIsDeleted; }
-	
+	public int getId() { return _iId; }
+	public void setId(int iId) { _iId = iId; } 
+	public boolean getIsDeleted() { return _bIsDeleted; }
+	public void setIsDeleted(boolean bIsdeleted) { _bIsDeleted = bIsdeleted; }
+	public String getTable() { return _sTable; }
+	public void setTable(String sTabla) { _sTable = sTabla; }
+	 
 	/**
 	 * @param sQuery
 	 * @throws Exception
@@ -21,7 +25,7 @@ public abstract class Entity {
 		Connection con = null;
 		
 		try {
-			if(__bIsDeleted) throw new IllegalStateException(__sTabla + " " + __iId + " ya eliminado.");
+			if(_bIsDeleted) throw new IllegalStateException(_sTable + " " + _iId + " ya eliminado.");
 			
 			con = Data.Connection();
 			con.createStatement().executeUpdate(sQuery);
@@ -33,37 +37,37 @@ public abstract class Entity {
 		Connection con = null;
 		
 		try {
-			if(__bIsDeleted) throw new IllegalStateException(__sTabla + " " + __iId + " ya eliminado.");
+			if(_bIsDeleted) throw new IllegalStateException(_sTable + " " + _iId + " ya eliminado.");
 			
 			con = Data.Connection();
-			con.createStatement().executeUpdate("DELETE FROM " + __sTabla + " WHERE id = " + __iId + ";");
-			__bIsDeleted = true;
+			con.createStatement().executeUpdate("DELETE FROM " + _sTable + " WHERE id = " + _iId + ";");
+			_bIsDeleted = true;
 		} catch(SQLException e){ throw e; }
 		finally { if(con != null) con.close(); } 
 	}
 	
 	/**
-	 * @param asFields
-	 * @param aiTypes
-	 * @param aoValues
+	 * @param asField
+	 * @param aiType
+	 * @param aoValue
 	 * @return
 	 */
-	protected static String Where(String[] asFields, int[] aiTypes, Object[] aoValues) {
-		StringJoiner stringjoinerAnd = new StringJoiner(" AND ");
+	protected static String Where(String[] asField, int[] aiType, Object[] aoValue) {
+		StringJoiner stringJoiner = new StringJoiner(" AND ");
   
-        for(int i = 0; i < asFields.length; ++i) {
-        	if(aoValues[i] != null)
-        		switch(aiTypes[i]) {
+        for(int i = 0; i < asField.length; ++i) {
+        	if(aoValue[i] != null)
+        		switch(aiType[i]) {
         			case Types.VARCHAR:
-        				stringjoinerAnd.add(asFields[i] + " like " + Data.String2Sql(aoValues[i].toString(), true, true));
+        				stringJoiner.add(asField[i] + " like " + Data.String2Sql(aoValue[i].toString(), true, true));
         				break;
         			case Types.INTEGER:
-        				stringjoinerAnd.add(asFields[i] + " = " + aoValues[i]);
+        				stringJoiner.add(asField[i] + " = " + aoValue[i]);
         				break;
         		}
         }
-        if(stringjoinerAnd.toString() != "")
-        	return "Where " + stringjoinerAnd;
-        return stringjoinerAnd.toString();
+        if(stringJoiner.toString() != "")
+        	return "Where " + stringJoiner;
+        return stringJoiner.toString();
 	}
 }

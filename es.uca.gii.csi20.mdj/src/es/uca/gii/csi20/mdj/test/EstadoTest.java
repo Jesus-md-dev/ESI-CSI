@@ -22,68 +22,68 @@ public class EstadoTest {
 	public void testConstructor() throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
-		Estado eEstado;
+		Estado estado;
 		
 		try {
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery("SELECT id, Nombre FROM estado;");
 			rs.next();
-			eEstado = new Estado(rs.getInt("id"), con);
+			estado = new Estado(rs.getInt("id"), con);
 			
-			assertEquals(rs.getInt("Id"), eEstado.getId());
-			assertEquals(rs.getString("Nombre"), eEstado.getNombre());
+			assertEquals(rs.getInt("Id"), estado.getId());
+			assertEquals(rs.getString("Nombre"), estado.getNombre());
 		}
 		catch (SQLException ee) { throw ee; }
 		finally {
-			if (con != null) con.close(); 
 			if (rs != null) rs.close();
+			if (con != null) con.close(); 
 		}
 	}
 	
 	@Test
 	public void testSelect() throws Exception {
-		List<Estado> alEstadoList = Estado.Select(null);
+		List<Estado> aEstado = Estado.Select(null);
 		
-		assertEquals("Abierto", alEstadoList.get(0).getNombre());
-		assertEquals("Cerrado", alEstadoList.get(1).getNombre());
-		assertEquals("Prescrito", alEstadoList.get(2).getNombre());
+		assertEquals("Abierto", aEstado.get(0).getNombre());
+		assertEquals("Cerrado", aEstado.get(1).getNombre());
+		assertEquals("Prescrito", aEstado.get(2).getNombre());
 	}
 	
 	@Test
 	public void testCreate() throws Exception{		
 		Connection con = null;
 		ResultSet rs = null;
-		Estado eEstado;
+		Estado estado;
 		
 		try {
 			con = Data.Connection();
 			
-			eEstado = Estado.Create("Estado");
+			estado = Estado.Create("Estado");
 			
-			rs = con.createStatement().executeQuery("SELECT id, Nombre FROM estado WHERE id = " + eEstado.getId() + ";");
+			rs = con.createStatement().executeQuery("SELECT id, Nombre FROM estado WHERE id = " + estado.getId() + ";");
 			
 			rs.next();
 			
-			assertEquals(rs.getInt("Id"), eEstado.getId());
-			assertEquals(rs.getString("Nombre"), eEstado.getNombre());		
+			assertEquals(rs.getInt("Id"), estado.getId());
+			assertEquals(rs.getString("Nombre"), estado.getNombre());		
 			
-			con.createStatement().executeUpdate("DELETE FROM estado WHERE id = " + eEstado.getId() + ";");
+			con.createStatement().executeUpdate("DELETE FROM estado WHERE id = " + estado.getId() + ";");
 		}
 		catch (SQLException ee) { throw ee; }
 		finally {
-			if (con != null) con.close();
 			if (rs != null) rs.close();
+			if (con != null) con.close();
 		}
 	}
 	
 	@Test
 	public void testUpdate() throws Exception{
-		Estado eEstado = Estado.Create("Estado");
-		eEstado.setNombre("UpdateEstado");
-		eEstado.Update();
-		Estado eEstadoUpdate = new Estado(eEstado.getId());
+		Estado estado = Estado.Create("Estado");
+		estado.setNombre("UpdateEstado");
+		estado.Update();
+		Estado eEstadoUpdate = new Estado(estado.getId());
 		assertEquals("UpdateEstado", eEstadoUpdate.getNombre());
-		eEstado.Delete();
+		estado.Delete();
 	}
 	
 	@Test
@@ -91,16 +91,16 @@ public class EstadoTest {
 		Connection con = null;
 		ResultSet rs = null;
 		try {
-			Estado eEstado = Estado.Create("NombreDelete");
+			Estado estado = Estado.Create("NombreDelete");
 			con = Data.Connection();
-			eEstado.Delete();
-			rs = con.createStatement().executeQuery("SELECT id FROM caso WHERE id = "+eEstado.getId());
+			estado.Delete();
+			rs = con.createStatement().executeQuery("SELECT id FROM caso WHERE id = " + estado.getId());
 			assertEquals(false, rs.next());
-			assertEquals(true, eEstado.getIsDeleted());	
+			assertEquals(true, estado.getIsDeleted());	
 		} catch (SQLException e) { throw e; }
 		finally {
-			if (con != null) con.close();
 			if (rs != null) rs.close();
+			if (con != null) con.close();
 		}
 	}
 }
