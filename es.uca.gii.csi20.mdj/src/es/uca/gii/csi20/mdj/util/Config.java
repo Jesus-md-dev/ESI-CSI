@@ -8,7 +8,6 @@ import java.util.Properties;
 public class Config {
 	
     public static Properties Properties(String sFile) throws IOException {
-
         InputStream inputStream = null;
 		
         try {

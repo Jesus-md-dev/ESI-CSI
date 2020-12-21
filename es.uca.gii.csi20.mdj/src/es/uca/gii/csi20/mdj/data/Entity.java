@@ -6,12 +6,12 @@ import java.sql.Types;
 import java.util.StringJoiner;
 
 public abstract class Entity {
-	protected int _iId;
-	protected boolean _bIsDeleted = false;
-	protected String _sTabla;
+	protected int __iId;
+	protected boolean __bIsDeleted = false;
+	protected String __sTabla;
 	
-	public int getId() { return _iId; }
-	public boolean getIsDeleted() { return _bIsDeleted; }
+	public int getId() { return __iId; }
+	public boolean getIsDeleted() { return __bIsDeleted; }
 	
 	/**
 	 * @param sQuery
@@ -21,7 +21,7 @@ public abstract class Entity {
 		Connection con = null;
 		
 		try {
-			if(_bIsDeleted) throw new IllegalStateException(_sTabla + " " + _iId + " ya eliminado.");
+			if(__bIsDeleted) throw new IllegalStateException(__sTabla + " " + __iId + " ya eliminado.");
 			
 			con = Data.Connection();
 			con.createStatement().executeUpdate(sQuery);
@@ -33,37 +33,35 @@ public abstract class Entity {
 		Connection con = null;
 		
 		try {
-			if(_bIsDeleted) throw new IllegalStateException(_sTabla + " " + _iId + " ya eliminado.");
+			if(__bIsDeleted) throw new IllegalStateException(__sTabla + " " + __iId + " ya eliminado.");
 			
 			con = Data.Connection();
-			con.createStatement().executeUpdate("DELETE FROM " + _sTabla + " WHERE id = " + _iId + ";");
-			_bIsDeleted = true;
+			con.createStatement().executeUpdate("DELETE FROM " + __sTabla + " WHERE id = " + __iId + ";");
+			__bIsDeleted = true;
 		} catch(SQLException e){ throw e; }
 		finally { if(con != null) con.close(); } 
 	}
 	
 	/**
-	 * @param sFields
-	 * @param iTypes
-	 * @param oValues
+	 * @param asFields
+	 * @param aiTypes
+	 * @param aoValues
 	 * @return
 	 */
-	protected static String Where(String[] sFields, int[] iTypes, Object[] oValues) {
+	protected static String Where(String[] asFields, int[] aiTypes, Object[] aoValues) {
 		StringJoiner stringjoinerAnd = new StringJoiner(" AND ");
   
-        for(int i = 0; i < sFields.length; ++i) {
-        	if(oValues[i] != null)
-        		switch(iTypes[i]) {
+        for(int i = 0; i < asFields.length; ++i) {
+        	if(aoValues[i] != null)
+        		switch(aiTypes[i]) {
         			case Types.VARCHAR:
-        				stringjoinerAnd.add(sFields[i] + " like " + Data.String2Sql(oValues[i].toString(), true, true));
+        				stringjoinerAnd.add(asFields[i] + " like " + Data.String2Sql(aoValues[i].toString(), true, true));
         				break;
         			case Types.INTEGER:
-        				stringjoinerAnd.add(sFields[i] + " = " + oValues[i]);
+        				stringjoinerAnd.add(asFields[i] + " = " + aoValues[i]);
         				break;
         		}
-        		
         }
-        
         if(stringjoinerAnd.toString() != "")
         	return "Where " + stringjoinerAnd;
         return stringjoinerAnd.toString();

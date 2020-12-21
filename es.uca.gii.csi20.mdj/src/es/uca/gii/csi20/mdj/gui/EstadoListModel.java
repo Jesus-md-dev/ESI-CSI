@@ -9,9 +9,6 @@ import es.uca.gii.csi20.mdj.data.Estado;
 
 public class EstadoListModel extends AbstractListModel<Estado> implements ComboBoxModel<Estado>{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private List<Estado> _aData;
 	private Object _oSelectedItem = null;

@@ -39,10 +39,10 @@ public class Caso extends Entity{
 			_sTitulo = rs.getString("Titulo");
 			_sDescripcion = rs.getString("Descripcion");
 			_iImportancia = rs.getInt("Importancia");
-			_bIsDeleted = false;
+			__bIsDeleted = false;
 			_eEstado = new Estado(rs.getInt("Id_Estado"));
-			_sTabla = "caso";
-			_iId = iId;
+			__sTabla = "caso";
+			__iId = iId;
 			
 		} catch ( SQLException e ) { throw e; } 
 		finally {
@@ -55,29 +55,24 @@ public class Caso extends Entity{
 		_sTitulo = sTitulo;
 		_sDescripcion = sDescripcion;
 		_iImportancia = iImportancia;
-		_bIsDeleted = false;
+		__bIsDeleted = false;
 		_eEstado = eEstado;
-		_sTabla = "caso";
-		_iId = iId;
+		__sTabla = "caso";
+		__iId = iId;
 	}
 
-	
-
 	public String toString() {
-		return "Caso" + "@" + _iId + ":" + _sTitulo + ":" + _sDescripcion 
+		return "Caso" + "@" + __iId + ":" + _sTitulo + ":" + _sDescripcion 
 				+ ":" + _iImportancia + ":" + _eEstado;
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	public void Update() throws Exception {
 		super.Update("UPDATE caso SET"
 				+ " Titulo = " + Data.String2Sql(_sTitulo, true, false)
 				+ ", Descripcion = " + Data.String2Sql(_sDescripcion, true, false)
 				+ ", Importancia = " + _iImportancia
 				+ ", Id_Estado = " + _eEstado.getId()
-				+ " WHERE id = " + _iId);
+				+ " WHERE id = " + __iId);
 	}
 	
 	/**
@@ -92,21 +87,22 @@ public class Caso extends Entity{
 			Integer iImportancia, String sEstado) throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
-		ArrayList<Caso> alCasoList = new ArrayList<Caso>();
+		ArrayList<Caso> acCaso = new ArrayList<Caso>();
 		
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("Select caso.id, caso.Id_Estado, caso.Titulo, caso.Descripcion, caso.Importancia"
-					+ " FROM caso INNER JOIN estado ON caso.Id_Estado = estado.id "
+			rs = con.createStatement().executeQuery("Select caso.Id, caso.Id_Estado, caso.Titulo,"
+					+ " caso.Descripcion, caso.Importancia"
+					+ " FROM caso INNER JOIN estado ON caso.Id_Estado = estado.Id "
 					+ Where(
 							new String[] { "caso.Titulo", "caso.Descripcion", "caso.Importancia", "estado.Nombre" },
 							new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR }, 
 							new Object[] { sTitulo, sDescripcion,  iImportancia, sEstado }));
 			while(rs.next())
-				alCasoList.add(new Caso(rs.getInt("Id"), rs.getString("Titulo"), rs.getString("Descripcion"),
+				acCaso.add(new Caso(rs.getInt("Id"), rs.getString("Titulo"), rs.getString("Descripcion"),
 						rs.getInt("Importancia"), new Estado(rs.getInt("Id_Estado"), con)));
 			
-			return alCasoList;
+			return acCaso;
 		} catch (Exception e) { throw e; }
 		finally {
 			if(rs != null) rs.close();
@@ -132,9 +128,7 @@ public class Caso extends Entity{
 					+ Data.String2Sql(sDescripcion, true, false) + "," + iImportancia + ")");
 			return new Caso(Data.LastId(con));
 		}
-		catch (SQLException ee) {throw ee;}
-		finally {
-			if(con != null) con.close();
-		}
+		catch (SQLException ee) { throw ee; }
+		finally { if(con != null) con.close(); }
 	}
 }

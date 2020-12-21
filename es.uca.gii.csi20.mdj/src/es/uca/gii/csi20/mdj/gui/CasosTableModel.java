@@ -6,9 +6,7 @@ import javax.swing.table.AbstractTableModel;
 import es.uca.gii.csi20.mdj.data.Caso;
 
 public class CasosTableModel extends AbstractTableModel{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Caso> _aData = new ArrayList<>();
 	

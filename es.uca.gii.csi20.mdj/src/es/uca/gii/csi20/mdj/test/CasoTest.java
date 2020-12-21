@@ -27,7 +27,7 @@ public class CasoTest {
 		
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT id, Titulo, Descripcion, Importancia FROM caso;");
+			rs = con.createStatement().executeQuery("SELECT caso.id, caso.Titulo, caso.Descripcion, caso.Importancia FROM caso;");
 			rs.next();			
 			
 			assertEquals(rs.getInt("Id"), cCaso.getId());
@@ -51,7 +51,6 @@ public class CasoTest {
 		
 		try {
 			con = Data.Connection();
-			
 			rs = con.createStatement().executeQuery("SELECT caso.id, caso.Titulo, caso.Descripcion,"
 					+ " caso.Importancia FROM caso WHERE id = " + cCaso.getId() + ";");
 			rs.next();
@@ -111,8 +110,7 @@ public class CasoTest {
 		assertEquals("PruebaDescripcion", cCaso.getDescripcion());
 		assertEquals(3, cCaso.getImportancia());
 		
-		cCaso.Delete();
-		eEstado.Delete();
+		cCaso.Delete(); eEstado.Delete();
 	}
 	
 	@Test
@@ -131,8 +129,7 @@ public class CasoTest {
 		assertEquals("UpdateDescripcion", cCasoUpdated.getDescripcion());
 		assertEquals(2, cCasoUpdated.getImportancia());
 		
-		cCasoUpdated.Delete();
-		eEstado.Delete();
+		cCasoUpdated.Delete();	eEstado.Delete();
 	}
 	
 	@Test

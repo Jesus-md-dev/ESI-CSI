@@ -23,14 +23,10 @@ public class Estado extends Entity{
 			con = Data.Connection();
 			Initialize(iId, con);
 		} catch(Exception e) { throw e; }
-		finally {
-			if(con != null) con = null;
-		}
+		finally { if(con != null) con = null; }
 	}
 	
-	public Estado(int iId, Connection con) throws Exception {
-		Initialize(iId, con);
-	}
+	public Estado(int iId, Connection con) throws Exception { Initialize(iId, con); }
 	
 	private void Initialize(int iId, Connection con) throws Exception {
 		ResultSet rs = null;
@@ -39,12 +35,10 @@ public class Estado extends Entity{
 					+ "FROM estado Where id = " + iId);
 			rs.next();
 			_sNombre = rs.getString("Nombre");
-			_iId = iId;
-			_sTabla = "estado";
+			__iId = iId;
+			__sTabla = "estado";
 		} catch(Exception e) { throw e; }
-		finally {
-			if(rs != null) rs = null;
-		}
+		finally { if(rs != null) rs = null; }
 	}
 	
 	/**
@@ -55,27 +49,16 @@ public class Estado extends Entity{
 	public static List<Estado> Select(String sNombre) throws Exception {
 		Connection con = null;
 		ResultSet rs = null;
+		ArrayList<Estado> aeEstado = new ArrayList<Estado>();
+		
 		try {
 			con = Data.Connection();
 			rs = con.createStatement().executeQuery("SELECT id FROM estado" 
-			+ Where(
-					new String[] {
-							"estado.Nombre"
-					},
-					new int[] {
-							Types.VARCHAR
-					}, 
-					new Object[] {
-							sNombre
-					}
-					));
-			ArrayList<Estado> alEstadoList = new ArrayList<Estado>();
-			
-			while(rs.next()) {
-				alEstadoList.add(new Estado(rs.getInt("id"), con));
-			}
-			
-			return alEstadoList;
+			+ Where(new String[] { "estado.Nombre" },
+					new int[] { Types.VARCHAR	}, 
+					new Object[] { sNombre }));
+			while(rs.next()) { aeEstado.add(new Estado(rs.getInt("id"), con)); }
+			return aeEstado;
 		} catch(Exception e) { throw e; }
 		finally {
 			if(rs != null) rs = null;
@@ -97,21 +80,14 @@ public class Estado extends Entity{
 			con = Data.Connection();
 			con.createStatement().executeUpdate("INSERT INTO estado (nombre)"
 					+ "VALUES (" +  Data.String2Sql(sNombre, true, false) + ");");
-			
 			return new Estado(Data.LastId(con), con);
 		} 
 		catch (SQLException ee) {throw ee;}
-		finally {
-			if(con != null) con.close();
-		}
+		finally { if(con != null) con.close(); }
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	public void Update() throws Exception {
-		super.Update("UPDATE estado SET"
-					+ " Nombre = " + Data.String2Sql(_sNombre, true, false)
-					+ " WHERE id = " + _iId);
-	}	
+		super.Update("UPDATE estado SET Nombre = " + Data.String2Sql(_sNombre, true, false)
+					+ " WHERE id = " + __iId);
+	}
 }

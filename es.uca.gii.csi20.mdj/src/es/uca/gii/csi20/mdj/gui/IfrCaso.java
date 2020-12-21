@@ -15,9 +15,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
 public class IfrCaso extends JInternalFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private JTextField txtTitulo;
 	private JTextField txtDescripcion;
@@ -81,6 +79,8 @@ public class IfrCaso extends JInternalFrame {
 			cmbEstado.getModel().setSelectedItem(_cCaso.getEstado());
 		}
 		
+		IfrCaso ifrCasoRef = this;
+		
 		JButton butSave = new JButton("Guardar");
 		butSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -96,9 +96,11 @@ public class IfrCaso extends JInternalFrame {
 					if(eEstado == null)
 						throw new IllegalStateException("Estado sin elegir");
 					
-					if(_cCaso == null)
+					if(_cCaso == null) {
 						_cCaso = Caso.Create(txtTitulo.getText(), txtDescripcion.getText(), 
 								Integer.parseInt(txtImportancia.getText()), eEstado);
+						FrmMain.lOpenCasos.add(ifrCasoRef);
+					}
 					else {
 						_cCaso.setTitulo(txtTitulo.getText());
 						_cCaso.setDescripcion(txtDescripcion.getText());

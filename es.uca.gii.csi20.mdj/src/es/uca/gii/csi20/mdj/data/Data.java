@@ -13,7 +13,6 @@ public class Data {
     public static String getPropertiesUrl() { return "./db.properties"; }
 	
     public static Connection Connection() throws Exception {
-	
         try {
             Properties properties = Config.Properties(getPropertiesUrl());
             return DriverManager.getConnection(
@@ -28,17 +27,14 @@ public class Data {
 	public static void LoadDriver() 
         throws InstantiationException, IllegalAccessException, 
         ClassNotFoundException, IOException {
-			
             Class.forName(Config.Properties(Data.getPropertiesUrl()
             ).getProperty("jdbc.driverClassName")).newInstance();
     }
     
     public static String String2Sql(String s, boolean bAddQuotes, boolean bAddWildcards ) {
     	s = s.replace("'","''");
-    	
     	if(bAddWildcards) s = "%" + s + "%";    	
     	if(bAddQuotes) s = "'" + s + "'";
-    	
     	return s;
     }
     
@@ -63,9 +59,7 @@ public class Data {
     		return rs.getInt("LAST_INSERT_ID()");
     	}
     	catch (Exception ee) { throw ee; }
-    	finally {
-    		if(rs != null) rs.close();
-    	}
+    	finally { if(rs != null) rs.close(); }
     }
     
 }

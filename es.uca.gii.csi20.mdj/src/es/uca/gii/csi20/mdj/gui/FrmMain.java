@@ -30,7 +30,7 @@ public class FrmMain {
 					FrmMain window = new FrmMain();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error",
+					JOptionPane.showMessageDialog(null, "Error al iniciar la aplicación",
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}

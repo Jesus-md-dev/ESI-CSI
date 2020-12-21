@@ -21,9 +21,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 
 public class IfrCasos extends JInternalFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private JTextField txtTitulo;
 	private JTextField txtDescripcion;
@@ -74,8 +72,7 @@ public class IfrCasos extends JInternalFrame {
 				new EstadoListModel(Estado.Select(null)));
 		cmbEstado.setEditable(true);
 		panel.add(cmbEstado);
-		
-		
+			
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -101,7 +98,6 @@ public class IfrCasos extends JInternalFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int iRow = ((JTable)e.getSource()).getSelectedRow();
-					
 					Caso cCaso = ((CasosTableModel)tabResult.getModel()).getData(iRow);
 					
 					if (cCaso != null) {			
@@ -129,7 +125,5 @@ public class IfrCasos extends JInternalFrame {
 			}
 		});
 		getContentPane().add(tabResult, BorderLayout.CENTER);
-
 	}
-
 }

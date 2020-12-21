@@ -61,8 +61,8 @@ class DataTest {
 	
 	@Test
 	void testBoolean2Sql() {
-		assertEquals(1,Data.Boolean2Sql(true));
-		assertEquals(0,Data.Boolean2Sql(false));
+		assertEquals(1, Data.Boolean2Sql(true));
+		assertEquals(0, Data.Boolean2Sql(false));
 	}
 
 }

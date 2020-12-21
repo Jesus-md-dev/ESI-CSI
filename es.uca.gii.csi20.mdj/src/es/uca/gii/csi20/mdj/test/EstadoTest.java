@@ -16,9 +16,7 @@ import es.uca.gii.csi20.mdj.data.Estado;
 public class EstadoTest {
 	
 	@BeforeAll
-	public void setUpBeforeClass() throws Exception {
-		Data.LoadDriver();
-	}
+	public void setUpBeforeClass() throws Exception { Data.LoadDriver(); }
 	
 	@Test
 	public void testConstructor() throws Exception {
