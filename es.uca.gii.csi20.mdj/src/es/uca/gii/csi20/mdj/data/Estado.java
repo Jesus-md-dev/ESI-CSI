@@ -14,6 +14,7 @@ public class Estado extends Entity{
 	public void setNombre(String sNombre) { _sNombre = sNombre; }
 	
 	/**
+	 * Create an object Estado
 	 * @param iId
 	 * @throws Exception
 	 */
@@ -26,8 +27,20 @@ public class Estado extends Entity{
 		finally { if(con != null) con = null; }
 	}
 	
+	/**
+	 * Create an object Estado with a initialized Connection
+	 * @param iId
+	 * @param con
+	 * @throws Exception
+	 */
 	public Estado(int iId, Connection con) throws Exception { Initialize(iId, con); }
 	
+	/**
+	 * Initialize the object with data of the database
+	 * @param iId
+	 * @param con
+	 * @throws Exception
+	 */
 	private void Initialize(int iId, Connection con) throws Exception {
 		ResultSet rs = null;
 		try {
@@ -41,9 +54,11 @@ public class Estado extends Entity{
 		finally { if(rs != null) rs = null; }
 	}
 	
+	public String toString() { return _sNombre; }
+	
 	/**
 	 * @param sNombre
-	 * @return
+	 * @return List of objects Estado equivalents to the parameter
 	 * @throws Exception
 	 */
 	public static List<Estado> Select(String sNombre) throws Exception {
@@ -53,11 +68,11 @@ public class Estado extends Entity{
 		
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT id FROM estado" 
+			rs = con.createStatement().executeQuery("SELECT Id FROM estado" 
 			+ Where(new String[] { "estado.Nombre" },
 					new int[] { Types.VARCHAR	}, 
 					new Object[] { sNombre }));
-			while(rs.next()) aEstado.add(new Estado(rs.getInt("id"), con));
+			while(rs.next()) aEstado.add(new Estado(rs.getInt("Id"), con));
 			return aEstado;
 		} catch(Exception e) { throw e; }
 		finally {
@@ -66,11 +81,9 @@ public class Estado extends Entity{
 		}
 	}
 	
-	public String toString() { return _sNombre; }
-	
 	/**
 	 * @param sNombre
-	 * @return
+	 * @return an object Estado with the parameter
 	 * @throws Exception
 	 */
 	public static Estado Create(String sNombre) throws Exception {
@@ -86,6 +99,10 @@ public class Estado extends Entity{
 		finally { if(con != null) con.close(); }
 	}
 	
+	/**
+	 * Update the object in the database
+	 * @throws Exception
+	 */
 	public void Update() throws Exception {
 		super.Update("UPDATE estado SET Nombre = " + Data.String2Sql(_sNombre, true, false)
 					+ " WHERE id = " + getId());

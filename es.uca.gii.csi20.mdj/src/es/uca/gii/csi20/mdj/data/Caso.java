@@ -23,6 +23,7 @@ public class Caso extends Entity{
 	public void setEstado(Estado estado) { _estado = estado; }
 	
 	/**
+	 * Create an object Caso
 	 * @param iId
 	 * @throws Exception
 	 */
@@ -31,19 +32,7 @@ public class Caso extends Entity{
 		ResultSet rs = null;
 		try {
 			con = Data.Connection();
-			rs = con.createStatement().executeQuery("SELECT caso.Id_Estado, caso.Titulo, "
-					+ "caso.Descripcion, caso.Importancia "
-					+ "FROM caso WHERE id = " + iId);
-			rs.next();
-						
-			_sTitulo = rs.getString("Titulo");
-			_sDescripcion = rs.getString("Descripcion");
-			_iImportancia = rs.getInt("Importancia");
-			_estado = new Estado(rs.getInt("Id_Estado"));
-			setIsDeleted(false);
-			setTable("caso");
-			setId(iId);
-			
+			Initialize(iId, con);
 		} catch ( SQLException e ) { throw e; } 
 		finally {
 			if(rs != null) rs.close();
@@ -51,14 +40,35 @@ public class Caso extends Entity{
 		}
 	}
 	
-	private Caso(int iId, String sTitulo, String sDescripcion, int iImportancia, Estado estado) {
-		_sTitulo = sTitulo;
-		_sDescripcion = sDescripcion;
-		_iImportancia = iImportancia;
-		_estado = estado;
-		setIsDeleted(false);
-		setTable("caso");
-		setId(iId);
+	/**
+	 * Create an object Caso with a initialized Connection
+	 * @param iId
+	 * @param con
+	 * @throws Exception
+	 */
+	public Caso(int iId, Connection con) throws Exception { Initialize(iId, con); }
+	
+	/**
+	 * Initialize the object with data of the database
+	 * @param iId
+	 * @param con
+	 * @throws Exception
+	 */
+	private void Initialize(int iId, Connection con) throws Exception {
+		ResultSet rs = null;
+		try {
+			rs = con.createStatement().executeQuery("SELECT caso.Id, caso.Id_Estado, caso.Titulo,"
+					+ " caso.Descripcion, caso.Importancia FROM caso Where caso.Id = " + iId);
+			rs.next();
+			_sTitulo = rs.getString("Titulo");
+			_sDescripcion = rs.getString("Descripcion");
+			_iImportancia = rs.getInt("Importancia");
+			_estado = new Estado(rs.getInt("Id_Estado"));
+			setIsDeleted(false);
+			setTable("caso");
+			setId(iId);
+		} catch(Exception e) { throw e; }
+		finally { if(rs != null) rs = null; }
 	}
 
 	public String toString() {
@@ -66,21 +76,12 @@ public class Caso extends Entity{
 				+ ":" + _iImportancia + ":" + _estado;
 	}
 	
-	public void Update() throws Exception {
-		super.Update("UPDATE caso SET"
-				+ " Titulo = " + Data.String2Sql(_sTitulo, true, false)
-				+ ", Descripcion = " + Data.String2Sql(_sDescripcion, true, false)
-				+ ", Importancia = " + _iImportancia
-				+ ", Id_Estado = " + _estado.getId()
-				+ " WHERE id = " + getId());
-	}
-	
 	/**
 	 * @param sTitulo
 	 * @param sDescripcion
 	 * @param iImportancia
 	 * @param sEstado
-	 * @return
+	 * @return List of objects Caso equivalents to the parameters
 	 * @throws Exception
 	 */
 	public static ArrayList<Caso> Select(String sTitulo, String sDescripcion,
@@ -99,9 +100,7 @@ public class Caso extends Entity{
 							new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR }, 
 							new Object[] { sTitulo, sDescripcion,  iImportancia, sEstado }));
 			while(rs.next())
-				aCaso.add(new Caso(rs.getInt("Id"), rs.getString("Titulo"), rs.getString("Descripcion"),
-						rs.getInt("Importancia"), new Estado(rs.getInt("Id_Estado"), con)));
-			
+				aCaso.add(new Caso(rs.getInt("Id"), con));
 			return aCaso;
 		} catch (Exception e) { throw e; }
 		finally {
@@ -109,13 +108,13 @@ public class Caso extends Entity{
 			if(con != null) con.close();
 		}
 	}
-	
+
 	/**
 	 * @param sTitulo
 	 * @param sDescripcion
 	 * @param iImportancia
 	 * @param estado
-	 * @return
+	 * @return an object Caso with the parameters
 	 * @throws Exception
 	 */
 	public static Caso Create(String sTitulo, String sDescripcion, int iImportancia,
@@ -130,5 +129,18 @@ public class Caso extends Entity{
 		}
 		catch (SQLException ee) { throw ee; }
 		finally { if(con != null) con.close(); }
+	}
+	
+	/**
+	 * Update the object in the database
+	 * @throws Exception
+	 */
+	public void Update() throws Exception {
+		super.Update("UPDATE caso SET"
+				+ " Titulo = " + Data.String2Sql(_sTitulo, true, false)
+				+ ", Descripcion = " + Data.String2Sql(_sDescripcion, true, false)
+				+ ", Importancia = " + _iImportancia
+				+ ", Id_Estado = " + _estado.getId()
+				+ " WHERE id = " + getId());
 	}
 }

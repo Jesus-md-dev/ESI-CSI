@@ -29,10 +29,11 @@ public class IfrCasos extends JInternalFrame {
 	private JTable tabResult;
 
 	/**
-	 * Create the frame.
-	 * @throws Exception 
+	 * @param pnlParent
+	 * @throws NumberFormatException
+	 * @throws Exception
 	 */
-	public IfrCasos(Container pnlParent) throws Exception {
+	public IfrCasos(Container pnlParent) throws NumberFormatException, Exception {
 		setResizable(true);
 		setClosable(true);
 		setEnabled(false);

@@ -42,11 +42,10 @@ public class FrmMain {
 	}
 
 	/**
-	 * Create the application.
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws UnsupportedLookAndFeelException
 	 */
 	public FrmMain() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 	UnsupportedLookAndFeelException {

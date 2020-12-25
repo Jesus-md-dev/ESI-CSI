@@ -18,6 +18,7 @@ public abstract class Entity {
 	public void setTable(String sTabla) { _sTable = sTabla; }
 	 
 	/**
+	 * Update the database with the parameters inserted
 	 * @param sQuery
 	 * @throws Exception
 	 */
@@ -33,6 +34,10 @@ public abstract class Entity {
 		finally { if(con != null) con.close(); }
 	}
 	
+	/**
+	 * Delete Entity in the database
+	 * @throws Exception
+	 */
 	public void Delete() throws Exception {
 		Connection con = null;
 		
@@ -50,7 +55,7 @@ public abstract class Entity {
 	 * @param asField
 	 * @param aiType
 	 * @param aoValue
-	 * @return
+	 * @return String with a initialized Where query
 	 */
 	protected static String Where(String[] asField, int[] aiType, Object[] aoValue) {
 		StringJoiner stringJoiner = new StringJoiner(" AND ");
