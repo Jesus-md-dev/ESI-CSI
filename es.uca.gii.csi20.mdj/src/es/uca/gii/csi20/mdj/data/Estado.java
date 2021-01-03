@@ -23,7 +23,7 @@ public class Estado extends Entity{
 		try {
 			con = Data.Connection();
 			Initialize(iId, con);
-		} catch(Exception e) { throw e; }
+		} catch(SQLException e) { throw e; }
 		finally { if(con != null) con = null; }
 	}
 	
@@ -50,7 +50,7 @@ public class Estado extends Entity{
 			_sNombre = rs.getString("Nombre");
 			setId(iId);
 			setTable("estado");
-		} catch(Exception e) { throw e; }
+		} catch(SQLException e) { throw e; }
 		finally { if(rs != null) rs = null; }
 	}
 	
@@ -74,7 +74,7 @@ public class Estado extends Entity{
 					new Object[] { sNombre }));
 			while(rs.next()) aEstado.add(new Estado(rs.getInt("Id"), con));
 			return aEstado;
-		} catch(Exception e) { throw e; }
+		} catch(SQLException e) { throw e; }
 		finally {
 			if(rs != null) rs = null;
 			if(con != null) con = null;

@@ -29,15 +29,11 @@ public class Caso extends Entity{
 	 */
 	public Caso(int iId) throws Exception {
 		Connection con = null;
-		ResultSet rs = null;
 		try {
 			con = Data.Connection();
 			Initialize(iId, con);
 		} catch ( SQLException e ) { throw e; } 
-		finally {
-			if(rs != null) rs.close();
-			if(con != null) con.close();
-		}
+		finally { if(con != null) con.close(); }
 	}
 	
 	/**
@@ -67,7 +63,7 @@ public class Caso extends Entity{
 			setIsDeleted(false);
 			setTable("caso");
 			setId(iId);
-		} catch(Exception e) { throw e; }
+		} catch(SQLException e) { throw e; }
 		finally { if(rs != null) rs = null; }
 	}
 
